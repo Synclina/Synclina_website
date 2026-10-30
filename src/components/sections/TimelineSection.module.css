@@ -1,0 +1,127 @@
+.track {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+}
+
+.progress {
+  position: absolute;
+  inset: 0;
+  transform-origin: top;
+  background: linear-gradient(180deg, #6d28d9, #a855f7 50%, #d946ef);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.8);
+  border-radius: 2px;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  padding: 2.5rem 0;
+}
+
+.item[data-side="left"] {
+  justify-content: flex-start;
+}
+
+.item[data-side="right"] {
+  justify-content: flex-end;
+}
+
+.node {
+  position: absolute;
+  left: 50%;
+  top: 3.25rem;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 2px solid var(--text-muted);
+  transition: all var(--duration-slow) var(--ease-out-expo);
+  z-index: 1;
+}
+
+.active .node {
+  border-color: #d946ef;
+  background: #a855f7;
+  box-shadow: 0 0 0 6px rgba(168, 85, 247, 0.15), 0 0 24px rgba(217, 70, 239, 0.8);
+  animation: node-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes node-pulse {
+  50% { box-shadow: 0 0 0 12px rgba(168, 85, 247, 0.05), 0 0 32px rgba(217, 70, 239, 1); }
+}
+
+.body {
+  width: calc(50% - 3rem);
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  transition: border-color var(--duration-slow), box-shadow var(--duration-slow);
+}
+
+.active .body {
+  border-color: var(--border-glass);
+}
+
+.item[data-side="left"] .body {
+  text-align: right;
+}
+
+.item[data-side="left"] .body p {
+  margin-left: auto;
+}
+
+.date {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-accent);
+  margin-bottom: 0.5rem;
+}
+
+.body h3 {
+  font-size: 1.375rem;
+  margin-bottom: 0.4rem;
+}
+
+.body p {
+  font-size: 0.9375rem;
+}
+
+@media (max-width: 768px) {
+  .rail,
+  .node {
+    left: 12px;
+  }
+
+  .item[data-side] {
+    justify-content: flex-end;
+  }
+
+  .body {
+    width: calc(100% - 44px);
+  }
+
+  .item[data-side="left"] .body {
+    text-align: left;
+  }
+
+  .item[data-side="left"] .body p {
+    margin-left: 0;
+  }
+}

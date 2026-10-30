@@ -1,0 +1,187 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cursor);
+  perspective: 1800px;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+/* ── Doors: two identical full-screen panels, each clipped to one half ── */
+.door {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(109, 40, 217, 0.12), transparent 70%),
+    radial-gradient(circle at 1px 1px, rgba(168, 85, 247, 0.07) 1px, transparent 0) 0 0 / 40px 40px,
+    var(--bg-primary);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.left {
+  clip-path: inset(0 50% 0 0);
+  transform-origin: 0% 50%;
+}
+
+.right {
+  clip-path: inset(0 0 0 50%);
+  transform-origin: 100% 50%;
+}
+
+/* Glowing inner edge of each door */
+.edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  opacity: 0;
+  background: linear-gradient(180deg, transparent, #c42bff 20%, #fff 50%, #7c22ff 80%, transparent);
+  box-shadow: 0 0 24px 4px rgba(168, 85, 247, 0.7);
+}
+
+.left .edge {
+  left: calc(50% - 2px);
+}
+
+.right .edge {
+  left: 50%;
+}
+
+/* ── Light: the seam + the glow leaking through the gap ── */
+.seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(180deg, transparent 0%, #d946ef 18%, #fff 50%, #6d28d9 82%, transparent 100%);
+  box-shadow:
+    0 0 18px 3px rgba(217, 70, 239, 0.8),
+    0 0 80px 18px rgba(124, 34, 255, 0.45);
+  transform: scaleY(0);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.leak {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 18vw;
+  margin-left: -9vw;
+  background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(196, 43, 255, 0.55), rgba(74, 18, 255, 0.2) 45%, transparent 75%);
+  filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Stage (centered artwork, identical in both doors) ── */
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.25rem, 3vh, 2rem);
+}
+
+.glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(70vw, 720px);
+  aspect-ratio: 1;
+  translate: -50% -58%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 34, 255, 0.35), rgba(196, 43, 255, 0.12) 40%, transparent 68%);
+  filter: blur(30px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mark {
+  position: relative;
+  width: clamp(140px, 22vw, 260px);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 30px rgba(124, 34, 255, 0.45));
+}
+
+.word {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  color: var(--text-primary);
+  line-height: 0;
+}
+
+.wordSvg {
+  width: clamp(240px, 46vw, 560px);
+  height: auto;
+}
+
+.tagline {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(0.7rem, 1.3vw, 0.95rem);
+  letter-spacing: 0.42em;
+  padding-left: 0.42em;
+  color: var(--text-secondary);
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.tagline span {
+  color: #a855f7;
+}
+
+.corner {
+  position: absolute;
+  bottom: clamp(1rem, 4vh, 2.5rem);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+
+.cornerLeft {
+  left: clamp(1rem, 4vw, 2.5rem);
+}
+
+.cornerRight {
+  right: clamp(1rem, 4vw, 2.5rem);
+  color: var(--text-secondary);
+}
+
+.skip {
+  position: absolute;
+  top: clamp(1rem, 4vh, 2rem);
+  right: clamp(1rem, 4vw, 2.5rem);
+  z-index: 4;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  transition: color var(--duration-fast), border-color var(--duration-fast);
+}
+
+.skip:hover {
+  color: var(--text-primary);
+  border-color: var(--border-glass-hover);
+}
+
+@media (max-width: 600px) {
+  .cornerLeft {
+    display: none;
+  }
+}

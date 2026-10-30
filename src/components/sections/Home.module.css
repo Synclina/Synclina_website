@@ -1,0 +1,136 @@
+.three {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.rowHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.rowHead h2 {
+  font-size: clamp(1.9rem, 4vw, 2.75rem);
+}
+
+.more {
+  margin-top: auto;
+  padding-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: gap var(--duration-normal) var(--ease-out-quart);
+}
+
+/* What we do */
+.doCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  transition: border-color var(--duration-normal), translate var(--duration-normal) var(--ease-out-quart);
+}
+
+.doCard:hover {
+  border-color: var(--border-glass-hover);
+  translate: 0 -4px;
+}
+
+.doCard:hover .more,
+.productCard:hover .more {
+  gap: 0.7rem;
+}
+
+.doIcon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  margin-bottom: 0.75rem;
+  color: #d8b4fe;
+  background: linear-gradient(135deg, rgba(109, 40, 217, 0.3), rgba(217, 70, 239, 0.12));
+  border: 1px solid var(--border-glass);
+}
+
+.doCard h3 {
+  font-size: 1.3rem;
+}
+
+.doCard p {
+  font-size: 0.975rem;
+}
+
+/* Product cards */
+.productCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(165deg, rgba(var(--accent-rgb), 0.12), var(--bg-card) 50%);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  transition: border-color var(--duration-normal), translate var(--duration-normal) var(--ease-out-quart);
+}
+
+.productCard:hover {
+  border-color: rgba(var(--accent-rgb), 0.55);
+  translate: 0 -4px;
+}
+
+.productTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.code {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.status {
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+}
+
+.productCard h3 {
+  font-size: 1.6rem;
+}
+
+.productTag {
+  color: var(--accent) !important;
+  font-weight: 500;
+}
+
+.productCard p {
+  font-size: 0.975rem;
+}
+
+@media (max-width: 900px) {
+  .three {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .rowHead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

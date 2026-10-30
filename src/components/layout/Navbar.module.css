@@ -1,0 +1,113 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  background: rgba(5, 5, 8, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.nav {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+/* Section buttons, grouped in one segmented bar */
+.links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 auto;
+  padding: 0.3rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+}
+
+.link {
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+
+.link:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.link.active {
+  color: #fff;
+  background: rgba(124, 34, 255, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(168, 85, 247, 0.45);
+}
+
+.cta {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  padding: 0.6rem 1.2rem;
+}
+
+.toggle {
+  display: none;
+  margin-left: auto;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem var(--space-md) 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+}
+
+.mobileLink {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.mobileLink.active {
+  color: #fff;
+  background: rgba(124, 34, 255, 0.2);
+}
+
+.mobileMenu :global(.btn) {
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 960px) {
+  .nav .links,
+  .nav .cta {
+    display: none;
+  }
+
+  .toggle {
+    display: grid;
+  }
+}
