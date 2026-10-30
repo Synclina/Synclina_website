@@ -20,38 +20,39 @@ export async function POST(req: Request) {
   const email = str(body.email, 200);
   const category = str(body.category, 100);
   const message = str(body.message, 5000);
-  const extras = [
-    ["Company", str(body.company, 120)],
-    ["Budget", str(body.budget, 60)],
-    ["Timeline", str(body.timeline, 60)],
-  ].filter(([, v]) => v);
+  const company = str(body.company, 120);
+  const budget = str(body.budget, 60);
+  const timeline = str(body.timeline, 60);
 
   if (!name || !EMAIL.test(email) || message.length < 10) {
     return Response.json({ error: "Please fill in your name, a valid email and a message (10+ characters)." }, { status: 422 });
   }
 
-  // Delivers straight to the inbox via Resend when RESEND_API_KEY is configured.
-  const key = process.env.RESEND_API_KEY;
-  if (key) {
-    const res = await fetch("https://api.resend.com/emails", {
+  // Delivers to the inbox through Brevo's "Website enquiry" template, so mail from the
+  // site is easy to tell apart (subject starts with [Website], tagged website-contact).
+  const key = process.env.BREVO_API_KEY;
+  const templateId = Number(process.env.BREVO_TEMPLATE_ID);
+  if (key && templateId) {
+    const submittedAt = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" });
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      headers: { "api-key": key, "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
-        from: process.env.CONTACT_FROM ?? "Synclina Website <onboarding@resend.dev>",
-        to: process.env.CONTACT_TO ?? SITE.email,
-        reply_to: email,
-        subject: `[Synclina] ${category} — ${name}`,
-        text: [`From: ${name} <${email}>`, `Topic: ${category}`, ...extras.map(([k, v]) => `${k}: ${v}`), "", message].join("\n"),
+        templateId,
+        to: [{ email: process.env.CONTACT_TO ?? SITE.email, name: "Synclina" }],
+        replyTo: { email, name },
+        tags: ["website-contact"],
+        params: { name, email, topic: category, company, budget, timeline, message, submitted_at: `${submittedAt} IST` },
       }),
     });
     if (!res.ok) {
-      console.error("[contact] Resend failed:", res.status, await res.text());
+      console.error("[contact] Brevo failed:", res.status, await res.text());
       return Response.json({ error: "We couldn't send your message right now. Please email us directly." }, { status: 502 });
     }
     return Response.json({ ok: true, delivered: true });
   }
 
   // No mail service configured: the client falls back to a prefilled mailto: link.
-  console.log("[contact] New message (RESEND_API_KEY not set):", { name, email, category, extras, message });
+  console.log("[contact] New message (BREVO_API_KEY not set):", { name, email, category, company, budget, timeline, message });
   return Response.json({ ok: true, delivered: false });
 }

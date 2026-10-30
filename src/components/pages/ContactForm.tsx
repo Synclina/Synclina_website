@@ -52,7 +52,7 @@ export default function ContactForm() {
         return;
       }
       // No mail service configured: hand off to the visitor's email app with everything prefilled.
-      const subject = `[Synclina] ${data.category} from ${data.name}`;
+      const subject = `[Website] ${data.category} from ${data.name}`;
       const body = [
         `Name: ${data.name}`,
         `Email: ${data.email}`,
