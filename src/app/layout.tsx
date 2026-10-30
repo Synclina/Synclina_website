@@ -20,12 +20,36 @@ export const metadata: Metadata = {
   },
   description:
     "Synclina is a human-first AI studio building intelligent products for everyday problems — and helping businesses automate the work that slows them down.",
-  keywords: ["Synclina", "AI", "automation", "AI products", "AI services", "Hyderabad", "startup"],
+  applicationName: "Synclina",
+  keywords: [
+    "Synclina",
+    "Synclina AI",
+    "AI startup India",
+    "AI products",
+    "AI automation services",
+    "business automation",
+    "AI apps",
+    "Hyderabad",
+  ],
+  authors: [{ name: FOUNDER.name }],
+  creator: "Synclina",
+  category: "technology",
   alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  // Search Console / Bing Webmaster ownership tags, set in Vercel's environment variables
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
+  },
   openGraph: {
     title: "Synclina — Ideas in Sync",
     description: "Building the future, one idea at a time.",
     type: "website",
+    locale: "en_IN",
     siteName: "Synclina",
     images: [{ url: "/images/logos/synclina9.png", width: 1254, height: 1254, alt: "Synclina — Ideas in Sync" }],
   },
@@ -51,6 +75,15 @@ const orgSchema = {
   sameAs: Object.values(SITE.socials),
 };
 
+// Lets search engines show "Synclina" as the site name in results
+const siteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Synclina",
+  alternateName: ["Synclina AI", "Synclina — Ideas in Sync"],
+  url: SITE.url,
+};
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" data-intro="pending" data-scroll-behavior="smooth" className={`${inter.variable} ${outfit.variable} ${mono.variable}`}>
@@ -58,7 +91,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <noscript>
           <style>{`#intro{display:none!important}html[data-intro]{overflow:auto}`}</style>
         </noscript>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgSchema, siteSchema]) }} />
 
         <div className="grid-background" aria-hidden="true" />
 

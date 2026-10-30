@@ -4,7 +4,7 @@ export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   description:
     "Synclina is a human-first AI studio turning everyday problems into intelligent products — and helping businesses automate the work that slows them down.",
-  email: "ysaisreenathreddy@gmail.com",
+  email: "synclinaai@gmail.com",
   location: "Hyderabad, India",
   founded: "May 2026",
   socials: {
