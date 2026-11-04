@@ -340,6 +340,16 @@ export default function ProductDetail({ slug }: { slug: string }) {
         )}
       </section>
 
+      {/* ── Legal ── */}
+      {slug === "drivsync" && (
+        <section className={`container ${styles.block}`}>
+          <p data-reveal>
+            Read DrivSync&apos;s <Link href="/legal/drivsync/privacy">privacy policy</Link>, <Link href="/legal/drivsync/terms">terms</Link> and{" "}
+            <Link href="/legal/drivsync/delete-account">how to delete your account</Link>.
+          </p>
+        </section>
+      )}
+
       {/* ── Next ── */}
       <section className={`container ${styles.block}`}>
         <Link

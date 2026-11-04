@@ -5,7 +5,7 @@ import PageCTA from "@/components/pages/PageCTA";
 
 export const metadata: Metadata = {
   title: "Products",
-  description: "Multiple ideas, one philosophy — AI-powered products for everyday problems, from mobility to creators to travel.",
+  description: "Multiple ideas, one philosophy — AI-powered products for everyday problems, from DrivSync for drivers and riders to creators and travel.",
   alternates: { canonical: "/products" },
 };
 
@@ -16,7 +16,7 @@ export default function ProductsPage() {
         label="Products"
         title="Multiple ideas."
         accent="One philosophy."
-        lead="Every idea starts with an everyday problem and an AI-first answer. Here's what's in the works. Names and details will be revealed closer to launch."
+        lead="Every idea starts with an everyday problem and an AI-first answer. DrivSync comes first, for everyday drivers and riders. The other two get their names closer to launch."
       />
       <ProductsSection />
       <PageCTA

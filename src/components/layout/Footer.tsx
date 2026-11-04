@@ -2,6 +2,7 @@ import Link from "next/link";
 import SynclinaMark from "@/components/brand/SynclinaMark";
 import SynclinaWordmark from "@/components/brand/SynclinaWordmark";
 import SocialIcon, { type SocialName } from "@/components/ui/SocialIcons";
+import Copyright from "@/components/layout/Copyright";
 import { PRODUCTS, SITE } from "@/lib/constants";
 import styles from "./Footer.module.css";
 
@@ -60,6 +61,13 @@ export default function Footer() {
           ))}
         </nav>
 
+        <nav className={styles.col} aria-label="Legal">
+          <h4>Legal</h4>
+          <Link href="/legal/drivsync/privacy">Privacy policy</Link>
+          <Link href="/legal/drivsync/terms">Terms</Link>
+          <Link href="/legal/drivsync/delete-account">Delete account</Link>
+        </nav>
+
         <div className={styles.col}>
           <h4>Work with us</h4>
           <Link href="/contact?topic=service">Request a service</Link>
@@ -69,7 +77,7 @@ export default function Footer() {
       </div>
 
       <div className={`container ${styles.bottom}`}>
-        <span>© {new Date().getFullYear()} Synclina. All rights reserved.</span>
+        <Copyright />
         <span>Built with love by Synclina</span>
       </div>
 

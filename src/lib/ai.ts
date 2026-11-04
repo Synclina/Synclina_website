@@ -16,7 +16,7 @@ ABOUT SYNCLINA
 - Early-stage and honest about it: "Just getting started. A lot more to come."
 - Contact: ${SITE.email} or the /contact page. LinkedIn and Instagram (@synclina.ai).
 
-PRODUCTS (in development — described by use case only)
+PRODUCTS (in development; DrivSync is named, the others are described by use case)
 ${productBrief}
 
 SERVICES (for businesses and individuals — page: /services)
@@ -25,10 +25,10 @@ Process: tell us the problem → free scoping call & quote → build & iterate �
 
 HOW TO BEHAVE
 - Be warm, enthusiastic and concise (usually under 120 words). Short paragraphs or bullet lists; markdown bold is fine.
-- IMPORTANT: product names are confidential. Never reveal or guess product names, internal codenames beyond "Idea 01/02/03", tech stacks, metrics or release dates. If asked, say details will be shared closer to launch.
+- DrivSync is the public name of Idea 01; its privacy policy, terms and account deletion page are at /legal/drivsync. The names of the other ideas are confidential: never reveal or guess them, or internal codenames beyond "Idea 02/03". Never reveal tech stacks, metrics or release dates. If asked, say details will be shared closer to launch.
 - Never invent pricing, launch dates, download links, user numbers or team details.
 - If someone wants something automated or built, get excited, ask one clarifying question, and invite them to /contact?topic=service to get a free scoping call and quote.
-- Point people to pages when relevant: /products, /services, /technology, /journey, /about, /contact.
+- Point people to pages when relevant: /products, /services, /technology, /journey, /about, /contact, /legal.
 - For unrelated questions, answer briefly if harmless, then steer back.`;
 
 /** Offline answers used when no Gemini key is configured. */
@@ -48,8 +48,11 @@ export function localAnswer(question: string): string {
       .map((h) => `- **${h.title}:** ${h.text}`)
       .join("\n")}\n\nStatus: ${product.status}. Release: ${product.release.window}. Follow along on the [${product.title} page](/products/${product.slug}).`;
   }
+  if (/privacy|terms|delete (my )?account/.test(q)) {
+    return `DrivSync's [privacy policy](/legal/drivsync/privacy), [terms](/legal/drivsync/terms) and [account deletion steps](/legal/drivsync/delete-account) are all here.`;
+  }
   if (/name|called|launch|release|when/.test(q)) {
-    return `We're keeping names and launch dates under wraps for now 🤫 — they'll be shared closer to launch. Follow us on [Instagram](${SITE.socials.instagram}) or [LinkedIn](${SITE.socials.linkedin}) to be the first to know.`;
+    return `Our first app is **DrivSync**. The other names and all launch dates are under wraps for now 🤫 — they'll be shared closer to launch. Follow us on [Instagram](${SITE.socials.instagram}) or [LinkedIn](${SITE.socials.linkedin}) to be the first to know.`;
   }
   if (/idea|collab|partner|work with/.test(q)) {
     return `We love that! 🚀 Synclina is all about turning ideas into intelligent products.\n\nWhat problem does your idea solve, and who is it for? Share a few details on our [contact page](/contact?topic=idea) — we read every message.`;

@@ -6,7 +6,7 @@ import DoorIntro from "@/components/intro/DoorIntro";
 import BackToTop from "@/components/ui/BackToTop";
 import AgentWidget from "@/components/ai/AgentWidget";
 import { FOUNDER, SITE } from "@/lib/constants";
-import "./globals.css";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", display: "swap" });

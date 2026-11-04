@@ -23,7 +23,7 @@ export const NAV_LINKS = [
 ];
 
 /* ─────────────────────────── PRODUCTS ───────────────────────────
- * Products are presented by use case only — no product names yet.
+ * DrivSync is named; the other ideas are presented by use case until they launch.
  * Everything below (status, updates, fixes, reviews) is plain data:
  * edit it here and every page updates.
  */
@@ -62,13 +62,13 @@ export type Product = {
 
 export const PRODUCTS: Product[] = [
   {
-    slug: "mobility",
+    slug: "drivsync",
     code: "Idea 01",
-    title: "Smart Mobility",
+    title: "DrivSync",
     domain: "Mobility · Everyday driving",
     tagline: "Your vehicle, finally understood.",
     summary:
-      "An AI companion for everyday drivers and riders — making running costs, trips and road safety simple to understand.",
+      "DrivSync is the app for everyday drivers and riders. It keeps fuel, mileage, expenses, service, paperwork and rides in one place, with safety tools and an AI Copilot.",
     problem: "Most people have no clear picture of what their vehicle really costs them, or help when something goes wrong on the road.",
     approach: "Turn everyday driving data into simple insights and timely nudges — with safety features that are never behind a paywall.",
     highlights: [
@@ -83,7 +83,7 @@ export const PRODUCTS: Product[] = [
     build: {
       version: "Pre-release · v2 (internal)",
       channel: "Internal",
-      lastUpdated: "Oct 2026",
+      lastUpdated: "Nov 2026",
       phases: [
         { label: "Research & design", state: "done" },
         { label: "Core experience", state: "done" },
@@ -176,8 +176,14 @@ export const getProduct = (slug: string) => PRODUCTS.find((p) => p.slug === slug
  */
 export const UPDATES: Update[] = [
   {
+    date: "2026-10-29",
+    product: "drivsync",
+    title: "Smart Mobility is now DrivSync",
+    notes: ["A new name for the same app", "Privacy policy and terms published under the new name"],
+  },
+  {
     date: "2026-10-01",
-    product: "mobility",
+    product: "drivsync",
     title: "Second major internal build",
     notes: ["Redesigned experience end to end", "Expanded automated test coverage"],
   },
@@ -195,7 +201,7 @@ export const UPDATES: Update[] = [
   },
   {
     date: "2026-05-15",
-    product: "mobility",
+    product: "drivsync",
     title: "Development kicks off",
     notes: ["Use case validated", "First designs and prototypes"],
   },
@@ -254,7 +260,7 @@ export const CAPABILITIES = [
 
 export const TIMELINE = [
   { date: "May 2026", title: "Synclina is born", description: "Founded in Hyderabad with one belief: AI should simplify everyday life, not complicate it." },
-  { date: "Jun 2026", title: "First ideas in motion", description: "Three everyday problems chosen — mobility, creator growth and travel — and work begins." },
+  { date: "Jun 2026", title: "First ideas in motion", description: "Three everyday problems chosen — driving, creator growth and travel — and work begins." },
   { date: "Summer 2026", title: "Building in private", description: "Research, design, prototypes and internal builds. Lots of testing, lots of learning." },
   { date: "Sep 2026", title: "Going public", description: "Synclina starts building in public on LinkedIn and Instagram." },
   { date: "Oct 2026", title: "Website & Synclina AI", description: "This website goes live — along with an AI assistant and services for businesses." },
