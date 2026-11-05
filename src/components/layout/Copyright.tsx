@@ -50,17 +50,21 @@ export default function Copyright() {
       </span>
       {open && (
         <div className={styles.doorBackdrop} onClick={close}>
-          <form onSubmit={submit} onClick={(e) => e.stopPropagation()}>
+          <form className={styles.doorForm} onSubmit={submit} onClick={(e) => e.stopPropagation()}>
             <input
               className={styles.doorInput}
               type="password"
               aria-label="Input"
               autoFocus
               autoComplete="off"
+              enterKeyHint="go"
               value={word}
               onChange={(e) => setWord(e.target.value)}
               onKeyDown={(e) => e.key === "Escape" && close()}
             />
+            <button className={styles.doorGo} type="submit" aria-label="Go" disabled={!word}>
+              →
+            </button>
           </form>
         </div>
       )}
