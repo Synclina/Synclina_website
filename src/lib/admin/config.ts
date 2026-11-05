@@ -5,7 +5,6 @@ export type AdminConfig = {
   passwordHash: string;
   totpSecret: string;
   recoveryHashes: string[];
-  doorHash: string;
 };
 
 /**
@@ -14,13 +13,12 @@ export type AdminConfig = {
  */
 export function adminConfig(): AdminConfig | null {
   if (process.env.VERCEL_ENV === "preview") return null;
-  const { ADMIN_PATH, ADMIN_PASSWORD_HASH, ADMIN_TOTP_SECRET, ADMIN_DOOR_HASH, ADMIN_RECOVERY_HASHES } = process.env;
-  if (!validAdminPath(ADMIN_PATH) || !ADMIN_PASSWORD_HASH || !ADMIN_TOTP_SECRET || !ADMIN_DOOR_HASH) return null;
+  const { ADMIN_PATH, ADMIN_PASSWORD_HASH, ADMIN_TOTP_SECRET, ADMIN_RECOVERY_HASHES } = process.env;
+  if (!validAdminPath(ADMIN_PATH) || !ADMIN_PASSWORD_HASH || !ADMIN_TOTP_SECRET) return null;
   return {
     path: ADMIN_PATH,
     passwordHash: ADMIN_PASSWORD_HASH,
     totpSecret: ADMIN_TOTP_SECRET,
-    doorHash: ADMIN_DOOR_HASH,
     recoveryHashes: (ADMIN_RECOVERY_HASHES ?? "").split(",").filter(Boolean),
   };
 }

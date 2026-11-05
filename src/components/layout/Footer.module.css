@@ -165,38 +165,10 @@
   display: grid;
   place-items: center;
   padding: 1rem;
+  overflow-y: auto;
   background: rgba(5, 5, 8, 0.7);
 }
 
-.doorForm {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.doorGo {
-  flex: none;
-  width: 2.75rem;
-  font-size: 1.125rem;
-  color: var(--text-primary);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-}
-
-.doorGo:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.doorInput {
-  width: min(280px, 65vw);
-  padding: 0.75rem 1rem;
-  font: inherit;
-  font-size: 1rem; /* 16px or more: phones don't zoom in on focus */
-  color: var(--text-primary);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  outline: none;
+.doorCard {
+  width: min(360px, 100%);
 }

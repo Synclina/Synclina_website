@@ -55,11 +55,6 @@ async function askTwice(what, minimum) {
 }
 
 const password = await askTwice("admin password", 14);
-let door = await askTwice("secret access word", 8);
-while (door === password) {
-  console.log("Use a different word from your password.");
-  door = await askTwice("secret access word", 8);
-}
 
 const rl = createInterface({ input: process.stdin, output: process.stdout });
 const keyPath = (await rl.question("Path of the Firebase key file (press Enter to add it later): ")).trim().replace(/^"|"$/g, "");
@@ -83,7 +78,6 @@ writeFileSync(
   [
     `ADMIN_PATH=${path}`,
     `ADMIN_PASSWORD_HASH=${await hashSecret(password)}`,
-    `ADMIN_DOOR_HASH=${await hashSecret(door, 15)}`,
     `ADMIN_TOTP_SECRET=${totp}`,
     `ADMIN_RECOVERY_HASHES=${recovery.map((c) => sha256(normalizeRecoveryCode(c))).join(",")}`,
     keyLine,

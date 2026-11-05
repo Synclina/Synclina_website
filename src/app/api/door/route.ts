@@ -1,9 +1,11 @@
 import { adminConfig } from "@/lib/admin/config";
-import { verifySecret } from "@/lib/admin/crypto";
+import { handleSignIn } from "@/lib/admin/login";
+import { hasSession } from "@/lib/admin/session";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-/** Best effort per server instance; the sign-in itself is limited in Firestore. */
+/** Best effort per server instance, so one visitor can't use up the shared lock below. */
 const tries = new Map<string, { count: number; since: number }>();
 const WINDOW_MS = 15 * 60 * 1000;
 const MAX_TRIES = 8;
@@ -19,18 +21,21 @@ function tooMany(ip: string, now: number): boolean {
   return entry.count > MAX_TRIES;
 }
 
-export async function POST(req: Request) {
-  const nothing = Response.json({});
+/** Already signed in: the address, so the box needn't ask again. Otherwise nothing. */
+export async function GET() {
   const cfg = adminConfig();
-  if (!cfg) return nothing;
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "?";
-  if (tooMany(ip, Date.now())) return nothing;
-  let word: unknown;
   try {
-    word = ((await req.json()) as { word?: unknown }).word;
+    if (cfg && (await hasSession())) return Response.json({ to: `/${cfg.path}/home` });
   } catch {
-    return nothing;
+    // Ask for the password as usual.
   }
-  if (typeof word !== "string" || !word || word.length > 200) return nothing;
-  return (await verifySecret(word.trim(), cfg.doorHash)) ? Response.json({ to: `/${cfg.path}` }) : nothing;
+  return Response.json({});
+}
+
+export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "?";
+  if (tooMany(ip, Date.now())) {
+    return Response.json({ error: "Too many wrong tries. Please try again later." }, { status: 429 });
+  }
+  return handleSignIn(req);
 }
