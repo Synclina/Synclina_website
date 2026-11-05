@@ -1,7 +1,7 @@
-import ConsoleShell, { LoadProblem } from "@/components/console/ConsoleShell";
+import { LoadProblem } from "@/components/console/ConsoleShell";
 import styles from "@/components/console/Console.module.css";
 import { recentAudit, type AuditEntry } from "@/lib/admin/audit";
-import { adminBase, requireSession } from "@/lib/admin/session";
+import { requireSession } from "@/lib/admin/session";
 
 const label = (iso: string) =>
   iso ? new Date(iso).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }) : "";
@@ -16,19 +16,19 @@ export default async function ConsoleActivity() {
   }
 
   return (
-    <ConsoleShell base={adminBase()} active="activity">
+    <div className={styles.pageIn}>
       <h1 className={styles.pageTitle}>Activity</h1>
       <p className={styles.muted}>The last 100 sign-ins and ticket changes.</p>
       {!entries && <LoadProblem />}
       <ul className={styles.activity}>
-        {entries?.map((e) => (
-          <li key={e.id}>
+        {entries?.map((e, i) => (
+          <li key={e.id} style={{ animationDelay: `${Math.min(i, 12) * 20}ms` }}>
             <span>{e.action}</span>
             {e.detail && <span className={styles.muted}>{e.detail}</span>}
             <time className={styles.muted}>{label(e.at)}</time>
           </li>
         ))}
       </ul>
-    </ConsoleShell>
+    </div>
   );
 }

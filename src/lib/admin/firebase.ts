@@ -1,5 +1,4 @@
 import { cert, getApps, initializeApp, type App } from "firebase-admin/app";
-import { getAuth } from "firebase-admin/auth";
 import { initializeFirestore, type Firestore } from "firebase-admin/firestore";
 
 let firestore: Firestore | null = null;
@@ -21,4 +20,8 @@ export function db(): Firestore {
   return firestore;
 }
 
-export const auth = () => getAuth(app());
+/** Loaded only when needed, so signing in and saving a ticket start faster. */
+export async function auth() {
+  const { getAuth } = await import("firebase-admin/auth");
+  return getAuth(app());
+}

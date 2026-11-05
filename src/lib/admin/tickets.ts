@@ -50,6 +50,10 @@ const toTicket = (doc: DocumentSnapshot, uid: string): Ticket => ({
 
 const newestTickets = () => db().collectionGroup("support").orderBy("createdAt", "desc").limit(TICKET_LIMIT);
 
+/** Rider names change rarely, so a page refresh needn't ask for them again. */
+const RIDER_CACHE_MS = 10 * 60 * 1000;
+const riderCache = new Map<string, { name: string | null; email: string | null; at: number }>();
+
 /** The tickets with each rider's name and email from their account. */
 export async function listTickets(): Promise<Ticket[]> {
   const snap = await newestTickets().get();
@@ -58,12 +62,16 @@ export async function listTickets(): Promise<Ticket[]> {
     return uid ? [toTicket(doc, uid)] : [];
   });
 
-  const uids = [...new Set(tickets.map((t) => t.uid))];
-  const riders = new Map<string, { name: string | null; email: string | null }>();
+  const now = Date.now();
+  const uids = [...new Set(tickets.map((t) => t.uid))].filter((uid) => now - (riderCache.get(uid)?.at ?? 0) > RIDER_CACHE_MS);
+  const riders = riderCache;
   try {
-    for (let i = 0; i < uids.length; i += 100) {
-      const { users } = await auth().getUsers(uids.slice(i, i + 100).map((uid) => ({ uid })));
-      for (const u of users) riders.set(u.uid, { name: u.displayName ?? null, email: u.email ?? null });
+    if (uids.length) {
+      const accounts = await auth();
+      for (let i = 0; i < uids.length; i += 100) {
+        const { users } = await accounts.getUsers(uids.slice(i, i + 100).map((uid) => ({ uid })));
+        for (const u of users) riders.set(u.uid, { name: u.displayName ?? null, email: u.email ?? null, at: now });
+      }
     }
   } catch (e) {
     // Tickets still show without names if the key can't read accounts.

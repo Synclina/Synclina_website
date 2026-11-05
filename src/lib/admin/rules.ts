@@ -43,7 +43,7 @@ export function readTicketChange(body: unknown): TicketChange | null {
   if (typeof body !== "object" || body === null) return null;
   const { uid, reference, status, note } = body as Record<string, unknown>;
   if (typeof uid !== "string" || !/^[A-Za-z0-9]{1,128}$/.test(uid)) return null;
-  if (typeof reference !== "string" || !/^FS-[A-Z0-9]{6}$/.test(reference)) return null;
+  if (typeof reference !== "string" || !/^(DS|FS)-[A-Z0-9]{6}$/.test(reference)) return null;
   if (typeof status !== "string" || !TICKET_STATUSES.includes(status as TicketStatus)) return null;
   if (typeof note !== "string" || note.length > NOTE_LIMIT) return null;
   return { uid, reference, status: status as TicketStatus, note: note.trim() };

@@ -2,6 +2,54 @@
   min-height: 100vh;
 }
 
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.pageIn {
+  animation: rise 320ms var(--ease-out-expo) both;
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.skeletonTitle,
+.skeletonRow {
+  border-radius: var(--radius-lg);
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.skeletonTitle {
+  width: 40%;
+  height: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.skeletonRow {
+  height: 4.5rem;
+}
+
 .header {
   position: sticky;
   top: 0;
@@ -35,6 +83,7 @@
   font-size: 0.875rem;
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
+  transition: color var(--duration-normal), background-color var(--duration-normal);
 }
 
 .navLink:hover {
@@ -50,6 +99,7 @@
   flex-shrink: 0;
   font-size: 0.875rem;
   color: var(--text-secondary);
+  transition: color var(--duration-fast);
 }
 
 .signOut:hover {
@@ -120,6 +170,7 @@
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
+  animation: rise 420ms var(--ease-out-expo) both;
 }
 
 .signIn h1 {
@@ -151,6 +202,7 @@
   background: var(--bg-secondary);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-md);
+  transition: border-color var(--duration-fast);
 }
 
 .signIn input:focus,
@@ -169,7 +221,14 @@
   font-size: 0.9375rem;
   font-weight: 500;
   border-radius: var(--radius-md);
-  transition: opacity var(--duration-fast), border-color var(--duration-fast);
+  transition: opacity var(--duration-normal), border-color var(--duration-fast), background-color var(--duration-fast), transform var(--duration-fast);
+}
+
+.primary:not(:disabled):active,
+.secondary:active,
+.statusChoice:active,
+.filter:active {
+  transform: scale(0.97);
 }
 
 .primary {
@@ -212,10 +271,12 @@
   border: 1px solid var(--border-subtle);
   border-top: 3px solid var(--accent);
   border-radius: var(--radius-lg);
+  transition: background-color var(--duration-normal), transform var(--duration-normal) var(--ease-out-expo);
 }
 
 .appCard:hover {
   background: var(--bg-card-hover);
+  transform: translateY(-2px);
 }
 
 .appCard strong {
@@ -261,6 +322,12 @@
   border-radius: var(--radius-full);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
+  transition: color var(--duration-normal), background-color var(--duration-normal), border-color var(--duration-normal), transform var(--duration-fast);
+}
+
+.filter:hover {
+  color: var(--text-primary);
+  border-color: var(--border-glass-hover);
 }
 
 .filter span,
@@ -290,12 +357,14 @@
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
+  animation: rise 300ms var(--ease-out-expo) both;
 }
 
 .ticketHead {
   width: 100%;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
+  transition: background-color var(--duration-fast);
   align-items: center;
   gap: 0.25rem 0.75rem;
   padding: 0.9rem 1rem;
@@ -320,9 +389,43 @@
   overflow-wrap: anywhere;
 }
 
+.chevron,
+.chevronOpen {
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--text-secondary);
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+}
+
+.fold,
+.foldOpen,
+.notice,
+.noticeOpen {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows var(--duration-normal) var(--ease-out-expo), opacity var(--duration-normal);
+}
+
+.foldOpen,
+.noticeOpen {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.foldInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .statusOpen,
 .statusProgress,
 .statusFixed {
+  transition: color var(--duration-normal), background-color var(--duration-normal);
   padding: 0.15rem 0.6rem;
   font-size: 0.75rem;
   font-weight: 500;
@@ -398,6 +501,7 @@
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--text-secondary);
+  transition: color var(--duration-normal), background-color var(--duration-normal), border-color var(--duration-normal), transform var(--duration-fast);
 }
 
 .statusChoice:not(:disabled):hover {
@@ -436,9 +540,31 @@
   padding: 0.7rem 0;
   border-bottom: 1px solid var(--border-subtle);
   overflow-wrap: anywhere;
+  animation: rise 280ms var(--ease-out-expo) both;
 }
 
 .activity time {
   margin-left: auto;
   white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pageIn,
+  .signIn,
+  .ticket,
+  .activity li,
+  .skeletonTitle,
+  .skeletonRow {
+    animation: none;
+  }
+
+  .fold,
+  .foldOpen,
+  .notice,
+  .noticeOpen,
+  .chevron,
+  .chevronOpen,
+  .appCard {
+    transition: none;
+  }
 }

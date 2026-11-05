@@ -108,6 +108,7 @@ test("statuses read the way the app reads them", () => {
 test("ticket changes are checked", () => {
   const good = { uid: "abc123", reference: "FS-ABC234", status: "fixed", note: " Done " };
   assert.deepEqual(readTicketChange(good), { uid: "abc123", reference: "FS-ABC234", status: "fixed", note: "Done" });
+  assert.equal(readTicketChange({ ...good, reference: "DS-ABC234" })?.reference, "DS-ABC234");
   for (const bad of [
     null,
     "x",

@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { adminConfig } from "@/lib/admin/config";
 import { requestPlace, sendAlert } from "@/lib/admin/alerts";
 import { refuseCrossSite, startSession } from "@/lib/admin/session";
@@ -29,17 +30,22 @@ export async function POST(req: Request) {
     const result = await checkSignIn(password, code, place);
     if (result.outcome === "ok") {
       await startSession();
-      await sendAlert("Synclina admin: someone signed in", [
-        `Signed in at ${whenIndia()} IST, from ${place}.`,
-        result.usedRecovery ? "A recovery code was used. It can't be used again." : "",
-        "If this wasn't you, change the password and the authenticator key in Vercel straight away.",
-      ]);
+      // Sent after answering, so the email never slows signing in.
+      after(() =>
+        sendAlert("Synclina admin: someone signed in", [
+          `Signed in at ${whenIndia()} IST, from ${place}.`,
+          result.usedRecovery ? "A recovery code was used. It can't be used again." : "",
+          "If this wasn't you, change the password and the authenticator key in Vercel straight away.",
+        ]),
+      );
       return Response.json({ ok: true });
     }
     if (result.lockedNow) {
-      await sendAlert("Synclina admin: sign-in locked", [
-        `Too many wrong tries at ${whenIndia()} IST, from ${place}. Sign-in is locked for a while.`,
-      ]);
+      after(() =>
+        sendAlert("Synclina admin: sign-in locked", [
+          `Too many wrong tries at ${whenIndia()} IST, from ${place}. Sign-in is locked for a while.`,
+        ]),
+      );
     }
     if (result.outcome === "locked" || result.lockedNow) {
       return Response.json({ error: "Too many wrong tries. Please try again later." }, { status: 429 });

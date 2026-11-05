@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ConsoleShell, { LoadProblem } from "@/components/console/ConsoleShell";
+import { LoadProblem } from "@/components/console/ConsoleShell";
 import styles from "@/components/console/Console.module.css";
 import { ADMIN_APPS } from "@/lib/admin/apps";
 import { adminBase, requireSession } from "@/lib/admin/session";
@@ -16,7 +16,7 @@ export default async function ConsoleHome() {
   }
 
   return (
-    <ConsoleShell base={base} active="home">
+    <div className={styles.pageIn}>
       <h1 className={styles.pageTitle}>Tickets by app</h1>
       {!counts && <LoadProblem />}
       <div className={styles.appGrid}>
@@ -44,6 +44,6 @@ export default async function ConsoleHome() {
           </Link>
         ))}
       </div>
-    </ConsoleShell>
+    </div>
   );
 }

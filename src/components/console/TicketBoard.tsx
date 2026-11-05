@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { NOTE_LIMIT, STATUS_LABELS, TICKET_STATUSES, type TicketStatus } from "@/lib/admin/rules";
 import type { Ticket } from "@/lib/admin/tickets";
@@ -35,10 +35,12 @@ export default function TicketBoard({ base, tickets: loaded }: { base: string; t
     const q = query.trim().toLowerCase();
     return tickets.filter(
       (t) =>
-        (filter === "all" || t.status === filter) &&
-        (!q || [t.reference, t.subject, t.topic, t.message, t.riderName, t.riderEmail].some((v) => v?.toLowerCase().includes(q))),
+        // The open ticket stays put when its status changes, until it's closed.
+        t.reference === openRef ||
+        ((filter === "all" || t.status === filter) &&
+          (!q || [t.reference, t.subject, t.topic, t.message, t.riderName, t.riderEmail].some((v) => v?.toLowerCase().includes(q)))),
     );
-  }, [tickets, filter, query]);
+  }, [tickets, filter, query, openRef]);
 
   const replaced = (next: BoardTicket) => setTickets((all) => all.map((t) => (t.reference === next.reference && t.uid === next.uid ? next : t)));
 
@@ -61,17 +63,20 @@ export default function TicketBoard({ base, tickets: loaded }: { base: string; t
       </div>
 
       {shown.length === 0 ? (
-        <p className={styles.emptyNote}>{tickets.length === 0 ? "No tickets yet." : "No tickets match."}</p>
+        <p key="none" className={styles.emptyNote}>
+          {tickets.length === 0 ? "No tickets yet." : "No tickets match."}
+        </p>
       ) : (
-        <ul className={styles.tickets}>
-          {shown.map((t) => (
+        <ul key={filter} className={styles.tickets}>
+          {shown.map((t, i) => (
             <TicketRow
               key={`${t.uid}/${t.reference}`}
               base={base}
               ticket={t}
+              index={i}
               open={openRef === t.reference}
               onToggle={() => setOpenRef(openRef === t.reference ? null : t.reference)}
-              onSaved={replaced}
+              onChanged={replaced}
             />
           ))}
         </ul>
@@ -80,122 +85,183 @@ export default function TicketBoard({ base, tickets: loaded }: { base: string; t
   );
 }
 
-function TicketRow({ base, ticket, open, onToggle, onSaved }: { base: string; ticket: BoardTicket; open: boolean; onToggle: () => void; onSaved: (t: BoardTicket) => void }) {
+type Saved = { status: TicketStatus; teamNote: string; updatedAt: string | null };
+
+function TicketRow({
+  base,
+  ticket,
+  index,
+  open,
+  onToggle,
+  onChanged,
+}: {
+  base: string;
+  ticket: BoardTicket;
+  index: number;
+  open: boolean;
+  onToggle: () => void;
+  onChanged: (t: BoardTicket) => void;
+}) {
   const [note, setNote] = useState(ticket.teamNote);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState<{ text: string; bad: boolean } | null>(null);
+  const [bodyReady, setBodyReady] = useState(false);
+  const [notice, setNotice] = useState<{ text: string; tone: "quiet" | "good" | "bad" } | null>(null);
 
-  useEffect(() => setNote(ticket.teamNote), [ticket.teamNote]);
+  // Changes show at once and save behind the scenes, in the order they were made.
+  const latest = useRef(ticket);
+  latest.current = ticket;
+  const confirmed = useRef<Saved>({ status: ticket.status, teamNote: ticket.teamNote, updatedAt: ticket.updatedAt });
+  const waiting = useRef<{ status: TicketStatus; note: string } | null>(null);
+  const saving = useRef(false);
+  const hideNotice = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  const save = async (status: TicketStatus, nextNote: string) => {
-    setSaving(true);
-    setMessage(null);
-    try {
-      const res = await fetch(`${base}/api/tickets`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ uid: ticket.uid, reference: ticket.reference, status, note: nextNote }),
-      });
-      if (res.status === 401) {
-        window.location.reload();
-        return;
-      }
-      const data = (await res.json().catch(() => ({}))) as { error?: string; updatedAt?: string };
-      if (!res.ok) {
-        setMessage({ text: data.error ?? "Not saved. Please try again.", bad: true });
-      } else {
-        onSaved({ ...ticket, status, teamNote: nextNote.trim(), updatedAt: data.updatedAt ?? ticket.updatedAt });
-        setMessage({ text: "Saved. The rider sees it next time they open Get help.", bad: false });
-      }
-    } catch {
-      setMessage({ text: "No connection. Not saved.", bad: true });
+  useEffect(() => {
+    if (open) setBodyReady(true);
+  }, [open]);
+  useEffect(() => () => clearTimeout(hideNotice.current), []);
+
+  const lastSeenNote = useRef(ticket.teamNote);
+  useEffect(() => {
+    // A newer note from a refresh, unless something is being typed.
+    if (!saving.current) {
+      confirmed.current = { status: ticket.status, teamNote: ticket.teamNote, updatedAt: ticket.updatedAt };
+      setNote((typed) => (typed === lastSeenNote.current ? ticket.teamNote : typed));
     }
-    setSaving(false);
+    lastSeenNote.current = ticket.teamNote;
+  }, [ticket.status, ticket.teamNote, ticket.updatedAt]);
+
+  const sendWaiting = async () => {
+    saving.current = true;
+    clearTimeout(hideNotice.current);
+    setNotice({ text: "Saving…", tone: "quiet" });
+    let problem: string | null = null;
+    while (waiting.current && !problem) {
+      const job = waiting.current;
+      waiting.current = null;
+      try {
+        const res = await fetch(`${base}/api/tickets`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ uid: ticket.uid, reference: ticket.reference, status: job.status, note: job.note }),
+        });
+        if (res.status === 401) {
+          window.location.reload();
+          return;
+        }
+        const data = (await res.json().catch(() => ({}))) as { error?: string; updatedAt?: string };
+        if (res.ok) confirmed.current = { status: job.status, teamNote: job.note.trim(), updatedAt: data.updatedAt ?? null };
+        else problem = data.error ?? "Not saved. Please try again.";
+      } catch {
+        problem = "No connection. Not saved.";
+      }
+    }
+    saving.current = false;
+    if (problem) {
+      waiting.current = null;
+      onChanged({ ...latest.current, ...confirmed.current });
+      setNotice({ text: problem, tone: "bad" });
+      return;
+    }
+    onChanged({ ...latest.current, ...confirmed.current });
+    setNotice({ text: "Saved. The rider sees it next time they open Your requests.", tone: "good" });
+    hideNotice.current = setTimeout(() => setNotice(null), 4000);
+  };
+
+  const change = (status: TicketStatus, nextNote: string) => {
+    onChanged({ ...ticket, status, teamNote: nextNote.trim() });
+    waiting.current = { status, note: nextNote };
+    if (!saving.current) void sendWaiting();
   };
 
   const mail = ticket.riderEmail
     ? `mailto:${ticket.riderEmail}?subject=${encodeURIComponent(`[DrivSync ${ticket.reference}] ${ticket.subject}`)}`
     : null;
 
+  const noticeStyle = notice?.tone === "bad" ? styles.problem : notice?.tone === "good" ? styles.saved : styles.muted;
+
   return (
-    <li className={styles.ticket}>
+    <li className={styles.ticket} style={{ animationDelay: `${Math.min(index, 10) * 25}ms` }}>
       <button type="button" className={styles.ticketHead} aria-expanded={open} onClick={onToggle}>
         <span className={STATUS_STYLE[ticket.status]}>{STATUS_LABELS[ticket.status]}</span>
         <span className={styles.ticketSubject}>{ticket.subject}</span>
+        <span className={open ? styles.chevronOpen : styles.chevron} aria-hidden="true">
+          ›
+        </span>
         <span className={styles.ticketMeta}>
           {ticket.reference} · {ticket.createdLabel}
           {ticket.riderName ? ` · ${ticket.riderName}` : ""}
         </span>
       </button>
 
-      {open && (
-        <div className={styles.ticketBody}>
-          <section>
-            <h2>Message</h2>
-            {ticket.message ? (
-              <p className={styles.message}>{ticket.message}</p>
-            ) : (
-              <p className={styles.muted}>Sent before messages were saved with tickets. It&apos;s in the email with this reference.</p>
-            )}
-          </section>
+      <div className={open ? styles.foldOpen : styles.fold} inert={!open}>
+        <div className={styles.foldInner}>
+          {bodyReady && (
+            <div className={styles.ticketBody}>
+              <section>
+                <h2>Message</h2>
+                {ticket.message ? (
+                  <p className={styles.message}>{ticket.message}</p>
+                ) : (
+                  <p className={styles.muted}>Sent before messages were saved with tickets. It&apos;s in the email with this reference.</p>
+                )}
+              </section>
 
-          <dl className={styles.details}>
-            <div>
-              <dt>Topic</dt>
-              <dd>{ticket.topic || "None"}</dd>
-            </div>
-            <div>
-              <dt>From</dt>
-              <dd>
-                {ticket.riderName ?? "Name not available"}
-                {ticket.riderEmail ? ` · ${ticket.riderEmail}` : ""}
-              </dd>
-            </div>
-            <div>
-              <dt>Sent</dt>
-              <dd>{ticket.channel === "emailApp" ? "Through the rider's email app" : "Through the app"}</dd>
-            </div>
-            {ticket.deviceInfo && (
-              <div>
-                <dt>App details</dt>
-                <dd>{ticket.deviceInfo}</dd>
+              <dl className={styles.details}>
+                <div>
+                  <dt>Topic</dt>
+                  <dd>{ticket.topic || "None"}</dd>
+                </div>
+                <div>
+                  <dt>From</dt>
+                  <dd>
+                    {ticket.riderName ?? "Name not available"}
+                    {ticket.riderEmail ? ` · ${ticket.riderEmail}` : ""}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Sent</dt>
+                  <dd>{ticket.channel === "emailApp" ? "Through the rider's email app" : "Through the app"}</dd>
+                </div>
+                {ticket.deviceInfo && (
+                  <div>
+                    <dt>App details</dt>
+                    <dd>{ticket.deviceInfo}</dd>
+                  </div>
+                )}
+              </dl>
+
+              <section>
+                <h2>Status</h2>
+                <div className={styles.statusPicker} role="group" aria-label="Status">
+                  {TICKET_STATUSES.map((s) => (
+                    <button key={s} type="button" aria-pressed={ticket.status === s} className={ticket.status === s ? styles.statusChosen : styles.statusChoice} onClick={() => ticket.status !== s && change(s, ticket.teamNote)}>
+                      {STATUS_LABELS[s]}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <section>
+                <h2>Note for the rider</h2>
+                <textarea rows={3} maxLength={NOTE_LIMIT} aria-label="Note for the rider" placeholder="The rider sees this in the app." value={note} onChange={(e) => setNote(e.target.value)} />
+                <div className={styles.actions}>
+                  <button type="button" className={styles.primary} disabled={note.trim() === ticket.teamNote} onClick={() => change(ticket.status, note)}>
+                    Save note
+                  </button>
+                  {mail && (
+                    <a className={styles.secondary} href={mail}>
+                      Reply by email
+                    </a>
+                  )}
+                </div>
+              </section>
+
+              <div className={notice ? styles.noticeOpen : styles.notice} role="status">
+                <div className={styles.foldInner}>{notice && <p className={noticeStyle}>{notice.text}</p>}</div>
               </div>
-            )}
-          </dl>
-
-          <section>
-            <h2>Status</h2>
-            <div className={styles.statusPicker} role="group" aria-label="Status">
-              {TICKET_STATUSES.map((s) => (
-                <button key={s} type="button" disabled={saving} aria-pressed={ticket.status === s} className={ticket.status === s ? styles.statusChosen : styles.statusChoice} onClick={() => ticket.status !== s && save(s, note)}>
-                  {STATUS_LABELS[s]}
-                </button>
-              ))}
             </div>
-          </section>
-
-          <section>
-            <h2>Note for the rider</h2>
-            <textarea rows={3} maxLength={NOTE_LIMIT} aria-label="Note for the rider" placeholder="The rider sees this in the app." value={note} onChange={(e) => setNote(e.target.value)} />
-            <div className={styles.actions}>
-              <button type="button" className={styles.primary} disabled={saving || note.trim() === ticket.teamNote} onClick={() => save(ticket.status, note)}>
-                {saving ? "Saving…" : "Save note"}
-              </button>
-              {mail && (
-                <a className={styles.secondary} href={mail}>
-                  Reply by email
-                </a>
-              )}
-            </div>
-          </section>
-
-          {message && (
-            <p className={message.bad ? styles.problem : styles.saved} role="status">
-              {message.text}
-            </p>
           )}
         </div>
-      )}
+      </div>
     </li>
   );
 }

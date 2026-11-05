@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import ConsoleShell, { LoadProblem } from "@/components/console/ConsoleShell";
+import { LoadProblem } from "@/components/console/ConsoleShell";
 import TicketBoard from "@/components/console/TicketBoard";
 import styles from "@/components/console/Console.module.css";
 import { adminApp } from "@/lib/admin/apps";
@@ -25,7 +25,7 @@ export default async function ConsoleApp({ params }: { params: Promise<{ app: st
   }
 
   return (
-    <ConsoleShell base={base} active={app.slug}>
+    <div className={styles.pageIn}>
       <h1 className={styles.pageTitle}>{app.title}</h1>
       {!app.takesTickets ? (
         <p className={styles.emptyNote}>This app isn&apos;t sending tickets yet. They&apos;ll show here once it does.</p>
@@ -38,6 +38,6 @@ export default async function ConsoleApp({ params }: { params: Promise<{ app: st
       ) : (
         <LoadProblem />
       )}
-    </ConsoleShell>
+    </div>
   );
 }
