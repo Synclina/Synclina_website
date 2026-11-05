@@ -2,7 +2,6 @@ import Link from "next/link";
 import SynclinaMark from "@/components/brand/SynclinaMark";
 import SynclinaWordmark from "@/components/brand/SynclinaWordmark";
 import SocialIcon, { type SocialName } from "@/components/ui/SocialIcons";
-import Copyright from "@/components/layout/Copyright";
 import { PRODUCTS, SITE } from "@/lib/constants";
 import styles from "./Footer.module.css";
 
@@ -77,7 +76,7 @@ export default function Footer() {
       </div>
 
       <div className={`container ${styles.bottom}`}>
-        <Copyright />
+        <span>© {new Date().getFullYear()} Synclina. All rights reserved.</span>
         <span>Built with love by Synclina</span>
       </div>
 
