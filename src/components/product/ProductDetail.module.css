@@ -15,9 +15,7 @@
   width: 900px;
   height: 900px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.22), transparent 60%);
-  filter: blur(60px);
-  pointer-events: none;
+  display: none;
 }
 
 .heroGrid {
@@ -76,7 +74,6 @@
   height: 6px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
   animation: pulse-glow 1.6s ease-in-out infinite;
 }
 
@@ -85,10 +82,8 @@
   letter-spacing: -0.05em;
   line-height: 0.95;
   margin-bottom: 1rem;
-  background: linear-gradient(180deg, #fff 40%, rgba(var(--accent-rgb), 0.9));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-weight: 400;
+  color: var(--fg);
 }
 
 .tagline {
@@ -345,7 +340,6 @@
   transform: scaleX(0);
   border-radius: inherit;
   background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.5), var(--accent));
-  box-shadow: 0 0 14px var(--accent);
 }
 
 .phases {
@@ -392,7 +386,6 @@
 .active .phaseDot {
   color: var(--accent);
   border-color: var(--accent);
-  box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.6);
   animation: pulse-glow 1.8s ease-in-out infinite;
 }
 
@@ -428,7 +421,6 @@
   height: 100%;
   transform-origin: top;
   background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
 }
 
 .changelog ol > li {
@@ -562,7 +554,7 @@
   padding: 3rem 1.5rem;
   border-radius: var(--radius-xl);
   border: 1px dashed rgba(var(--accent-rgb), 0.3);
-  background: radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.07), transparent 60%);
+  background: var(--panel);
 }
 
 .empty > svg {

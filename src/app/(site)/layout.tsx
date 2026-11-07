@@ -1,25 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Outfit, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import DoorIntro from "@/components/intro/DoorIntro";
+import Intro from "@/components/intro/Intro";
+import MotionLayer from "@/components/motion/MotionLayer";
 import BackToTop from "@/components/ui/BackToTop";
 import AgentWidget from "@/components/ai/AgentWidget";
 import { FOUNDER, SITE } from "@/lib/constants";
 import "../globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", display: "swap" });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
+const display = Montserrat({ subsets: ["latin"], variable: "--font-montserrat", display: "swap" });
+const body = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Synclina — Ideas in Sync | Human-first AI products & automation",
+    default: "Synclina | AI products and automation, built in Hyderabad",
     template: "%s · Synclina",
   },
   description:
-    "Synclina is a human-first AI studio building intelligent products for everyday problems — and helping businesses automate the work that slows them down.",
+    "Synclina is an AI product studio in Hyderabad. We build our own AI apps, starting with DrivSync, and custom automations for businesses tired of repetitive tasks.",
   applicationName: "Synclina",
   keywords: [
     "Synclina",
@@ -57,7 +58,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050508",
+  themeColor: "#07050F",
   colorScheme: "dark",
 };
 
@@ -86,14 +87,13 @@ const siteSchema = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-intro="pending" data-scroll-behavior="smooth" className={`${inter.variable} ${outfit.variable} ${mono.variable}`}>
+    <html lang="en" suppressHydrationWarning data-intro="pending" data-scroll-behavior="smooth" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add("js")` }} />
         <noscript>
           <style>{`#intro{display:none!important}html[data-intro]{overflow:auto}`}</style>
         </noscript>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgSchema, siteSchema]) }} />
-
-        <div className="grid-background" aria-hidden="true" />
 
         <div id="site">
           <a href="#main" className="skip-link">
@@ -104,9 +104,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Footer />
         </div>
 
+        <MotionLayer />
         <BackToTop />
         <AgentWidget />
-        <DoorIntro />
+        <Intro />
       </body>
     </html>
   );

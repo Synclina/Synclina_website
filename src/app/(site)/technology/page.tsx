@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PageHero from "@/components/pages/PageHero";
 import TechSection from "@/components/sections/TechSection";
 import Capabilities from "@/components/pages/Capabilities";
-import PageCTA from "@/components/pages/PageCTA";
+import ClosingCTA from "@/components/home/ClosingCTA";
 
 export const metadata: Metadata = {
   title: "Technology",
@@ -21,13 +21,7 @@ export default function TechnologyPage() {
       />
       <TechSection bare />
       <Capabilities />
-      <PageCTA
-        title="Want this tech"
-        accent="working for you?"
-        text="We put the same stack to work on automations and custom builds for businesses."
-        primary={{ label: "Explore services", href: "/services" }}
-        secondary={{ label: "Get in touch", href: "/contact" }}
-      />
+      <ClosingCTA title="Put this to work for you." sub="We use the same approach on automations and custom builds for businesses." label="Explore services" href="/services" />
     </>
   );
 }

@@ -7,7 +7,8 @@ const nextConfig: NextConfig = {
   // Used by the site's old link for DrivSync, from when it was "Smart Mobility".
   async redirects() {
     return [{ source: "/products/mobility", destination: "/products/drivsync", permanent: true },
-      { source: "/legal/drivsync", destination: "/legal/drivsync/privacy", permanent: false }];
+      { source: "/legal/drivsync", destination: "/legal/drivsync/privacy", permanent: false },
+      { source: "/journey", destination: "/build-log", permanent: true }];
   },
   async headers() {
     return [

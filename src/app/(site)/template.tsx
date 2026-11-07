@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { isIntroDone } from "@/lib/scroll";
+import { isIntroDone, resetScroll } from "@/lib/scroll";
 
 /**
  * Per-route entrance: a quick, light fade-up so page changes feel seamless
@@ -13,13 +13,13 @@ export default function Template({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const el = content.current;
     if (!el || !isIntroDone()) return;
-    window.scrollTo({ top: 0, behavior: "instant" });
+    resetScroll();
     el.animate(
       [
-        { opacity: 0, transform: "translateY(14px)" },
+        { opacity: 0, transform: "translateY(8px)" },
         { opacity: 1, transform: "none" },
       ],
-      { duration: 400, easing: "cubic-bezier(0.25, 1, 0.5, 1)" },
+      { duration: 240, easing: "cubic-bezier(0.16, 1, 0.3, 1)" },
     );
   }, []);
 

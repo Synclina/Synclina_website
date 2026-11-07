@@ -1,12 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ArrowUp, Sparkles, X, RotateCcw } from "lucide-react";
+import { ArrowUp, MessageCircle, X, RotateCcw } from "lucide-react";
 import SynclinaMark from "@/components/brand/SynclinaMark";
 import AgentMessages from "./AgentMessages";
 import { OPEN_AGENT_EVENT } from "@/lib/agent";
-import { onIntroDone } from "@/lib/scroll";
 import type { ChatMessage } from "@/lib/ai";
 import styles from "./AgentWidget.module.css";
 
@@ -15,7 +13,7 @@ const WELCOME: ChatMessage = {
   content:
     "Hey there 👋 I'm **Synclina AI**.\n\nAsk me about what we are building, our services, or how we could automate something for you.",
 };
-const SUGGESTIONS = ["What are you building?", "Can you automate my work?", "Who founded Synclina?"];
+const SUGGESTIONS = ["What is DrivSync?", "Can you automate a task for my business?", "How does a project start?"];
 
 export default function AgentWidget() {
   const [open, setOpen] = useState(false);
@@ -82,28 +80,35 @@ export default function AgentWidget() {
     return () => window.removeEventListener(OPEN_AGENT_EVENT, onOpen);
   }, [send]);
 
-  useEffect(() => {
-    if (!fab.current) return;
-    gsap.set(fab.current, { scale: 0, opacity: 0 });
-    return onIntroDone(() => gsap.to(fab.current, { scale: 1, opacity: 1, duration: 0.8, delay: 1, ease: "back.out(2)" }));
-  }, []);
-
+  // Escape closes, focus stays inside the open panel, and returns to the button on close
   useEffect(() => {
     const el = panel.current;
     if (!el) return;
-    if (open) {
-      gsap.fromTo(
-        el,
-        { autoAlpha: 0, y: 30, scale: 0.92, transformOrigin: "100% 100%" },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: "expo.out" },
-      );
-      setTimeout(() => inputRef.current?.focus(), 200);
-    } else {
-      gsap.to(el, { autoAlpha: 0, y: 20, scale: 0.95, duration: 0.3, ease: "power2.in" });
+    if (!open) {
+      if (el.contains(document.activeElement)) fab.current?.focus();
+      return;
     }
-    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    window.addEventListener("keydown", esc);
-    return () => window.removeEventListener("keydown", esc);
+    const t = window.setTimeout(() => inputRef.current?.focus(), 60);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Tab") return;
+      const items = el.querySelectorAll<HTMLElement>("button:not([disabled]), input, a[href]");
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("keydown", onKey);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -118,16 +123,14 @@ export default function AgentWidget() {
 
   return (
     <>
-      <div ref={panel} className={styles.panel} role="dialog" aria-label="Synclina AI chat" aria-hidden={!open}>
+      <div ref={panel} className={`${styles.panel} ${open ? styles.open : ""}`} role="dialog" aria-modal="false" aria-label="Synclina AI chat" aria-hidden={!open}>
         <header className={styles.header}>
           <div className={styles.avatar}>
             <SynclinaMark size={24} />
           </div>
           <div className={styles.headText}>
             <strong>Synclina AI</strong>
-            <span>
-              <i className={styles.online} /> Online · usually instant
-            </span>
+            <span>Answers about Synclina&apos;s products and services</span>
           </div>
           <button className={styles.iconBtn} onClick={reset} aria-label="New conversation" title="New conversation">
             <RotateCcw size={16} />
@@ -173,12 +176,12 @@ export default function AgentWidget() {
 
       <button
         ref={fab}
-        className={`${styles.fab} ${open ? styles.fabOpen : ""}`}
+        className={styles.fab}
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close Synclina AI" : "Open Synclina AI"}
+        aria-expanded={open}
       >
-        <span className={styles.fabRing} />
-        {open ? <X size={22} /> : <Sparkles size={22} />}
+        {open ? <X size={22} /> : <MessageCircle size={22} />}
       </button>
     </>
   );

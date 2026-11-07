@@ -62,14 +62,13 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 0%), rgba(168, 85, 247, 0.14), transparent 50%);
+  display: none;
   opacity: 0;
   transition: opacity var(--duration-slow);
 }
 
 .pillarWrap:hover .pillar {
   border-color: var(--border-glass-hover);
-  box-shadow: 0 20px 60px -25px rgba(168, 85, 247, 0.5);
 }
 
 .pillarWrap:hover .pillar::before {
@@ -97,7 +96,7 @@
 }
 
 @keyframes icon-pulse {
-  50% { box-shadow: 0 0 0 8px rgba(168, 85, 247, 0.08), 0 0 24px rgba(168, 85, 247, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(168, 85, 247, 0.08); }
 }
 
 .pillar h3 {
@@ -145,10 +144,7 @@
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1;
-  background: linear-gradient(180deg, #fff 30%, #a855f7);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--fg);
 }
 
 .stat > span {

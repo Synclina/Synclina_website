@@ -1,0 +1,55 @@
+.approach {
+  padding: var(--s-32) 0;
+}
+
+.statement {
+  max-width: 18ch;
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+}
+
+@media (min-width: 900px) {
+  .statement {
+    max-width: 20ch;
+  }
+}
+
+.key {
+  position: relative;
+  display: inline-block;
+}
+
+/* The page's one gradient underline */
+.underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.04em;
+  height: 0.07em;
+  border-radius: 1em;
+  background: var(--gradient);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 600ms var(--ease-out);
+}
+
+.drawn {
+  transform: scaleX(1);
+}
+
+.facts {
+  margin-top: var(--s-12);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .statement {
+    font-size: var(--step-2);
+  }
+}

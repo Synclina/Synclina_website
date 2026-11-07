@@ -1,3 +1,5 @@
+import LOG from "@/data/log.json";
+
 export const SITE = {
   name: "Synclina",
   tagline: "Ideas in Sync.",
@@ -17,8 +19,7 @@ export const SITE = {
 export const NAV_LINKS = [
   { label: "Products", href: "/products" },
   { label: "Services", href: "/services" },
-  { label: "Technology", href: "/technology" },
-  { label: "Journey", href: "/journey" },
+  { label: "Build log", href: "/build-log" },
   { label: "About", href: "/about" },
 ];
 
@@ -76,8 +77,8 @@ export const PRODUCTS: Product[] = [
       { title: "Safety first", text: "Help when it matters most — free, always." },
       { title: "An AI copilot", text: "Ask questions about your vehicle in plain language." },
     ],
-    accent: "#3B82F6",
-    accentRgb: "59, 130, 246",
+    accent: "#7C3EF0",
+    accentRgb: "124, 62, 240",
     status: "Advanced development",
     release: { stage: "Internal testing", window: "To be announced", platforms: ["Android", "iOS"], access: "Early-access list opening soon" },
     build: {
@@ -111,8 +112,8 @@ export const PRODUCTS: Product[] = [
       { title: "Insights that matter", text: "Know what works and why." },
       { title: "Safe by design", text: "Official integrations only." },
     ],
-    accent: "#F472B6",
-    accentRgb: "244, 114, 182",
+    accent: "#7C3EF0",
+    accentRgb: "124, 62, 240",
     status: "Early development",
     release: { stage: "Foundations", window: "To be announced", platforms: ["Mobile", "Web"], access: "Early-access list opening soon" },
     build: {
@@ -146,8 +147,8 @@ export const PRODUCTS: Product[] = [
       { title: "Discover more", text: "Places worth the detour." },
       { title: "Travel together", text: "Companions and shared costs, sorted." },
     ],
-    accent: "#10B981",
-    accentRgb: "16, 185, 129",
+    accent: "#7C3EF0",
+    accentRgb: "124, 62, 240",
     status: "In development",
     release: { stage: "Building", window: "To be announced", platforms: ["Web", "Mobile"], access: "Early-access list opening soon" },
     build: {
@@ -170,46 +171,21 @@ export const PRODUCTS: Product[] = [
 
 export const getProduct = (slug: string) => PRODUCTS.find((p) => p.slug === slug);
 
-/* ─────────────────────────── UPDATES FEED ───────────────────────────
- * Publish an update by adding it here. It appears in the "Latest updates"
- * carousel on the home page and in that product's changelog.
+/* ─────────────────────────── BUILD LOG ───────────────────────────
+ * Publish an update by adding an entry to src/data/log.json. It shows up in the
+ * build log, the home page proof strip and that product's changelog.
  */
-export const UPDATES: Update[] = [
-  {
-    date: "2026-10-29",
-    product: "drivsync",
-    title: "Smart Mobility is now DrivSync",
-    notes: ["A new name for the same app", "Privacy policy and terms published under the new name"],
-  },
-  {
-    date: "2026-10-01",
-    product: "drivsync",
-    title: "Second major internal build",
-    notes: ["Redesigned experience end to end", "Expanded automated test coverage"],
-  },
-  {
-    date: "2026-09-25",
-    product: "travel",
-    title: "Core experience in progress",
-    notes: ["Planning flow designed", "First features being built"],
-  },
-  {
-    date: "2026-08-20",
-    product: "creator-growth",
-    title: "Foundations complete",
-    notes: ["Architecture and integrations set up", "Automation engine groundwork laid"],
-  },
-  {
-    date: "2026-05-15",
-    product: "drivsync",
-    title: "Development kicks off",
-    notes: ["Use case validated", "First designs and prototypes"],
-  },
-];
+export const UPDATES: Update[] = LOG;
 
 const byNewest = (a: Update, b: Update) => b.date.localeCompare(a.date);
 export const latestUpdates = (limit = 8) => [...UPDATES].sort(byNewest).slice(0, limit);
 export const updatesFor = (slug: string) => UPDATES.filter((u) => u.product === slug).sort(byNewest);
+/** Stage meter fill for a product status label. */
+export const stageLevel = (status: string) =>
+  /advanced/i.test(status) ? 75 : /early/i.test(status) ? 25 : /in development/i.test(status) ? 50 : 0;
+
+export const productBySlug = (slug: string) => PRODUCTS.find((p) => p.slug === slug);
+
 export const formatUpdateDate = (iso: string) =>
   new Date(iso + "T00:00:00").toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
@@ -221,7 +197,7 @@ export const SERVICES = [
   { icon: "megaphone", title: "Social & marketing automation", text: "Auto-replies, lead capture, follow-ups and content scheduling that keep engagement flowing." },
   { icon: "smartphone", title: "Custom apps & websites", text: "Mobile apps, web apps and sites designed and built around the problem you need solved." },
   { icon: "plug", title: "Integrations & dashboards", text: "Connect the tools you already use, keep data in sync and see what matters at a glance." },
-  { icon: "sparkles", title: "AI prototyping", text: "Have an idea? We'll validate it fast with a working AI-powered prototype." },
+  { icon: "flask", title: "AI prototyping", text: "Have an idea? We'll validate it fast with a working AI-powered prototype." },
 ] as const;
 
 export const SERVICE_STEPS = [
@@ -232,13 +208,6 @@ export const SERVICE_STEPS = [
 ];
 
 /* ─────────────────────────── TECHNOLOGY ─────────────────────────── */
-
-export const STATS = [
-  { value: 3, suffix: "", label: "Ideas in build" },
-  { value: 1, suffix: "", label: "Philosophy" },
-  { value: 0, suffix: "", label: "Data sold. Ever." },
-  { value: 24, suffix: "/7", label: "Automation" },
-];
 
 export const PILLARS = [
   { icon: "brain", title: "AI at the core", description: "Every product ships with intelligence that understands context, not just commands." },

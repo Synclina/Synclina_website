@@ -1,0 +1,263 @@
+.grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--s-16);
+  align-items: start;
+}
+
+.flag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--accent);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 4px 12px;
+  margin-bottom: var(--s-6);
+}
+
+.sub {
+  margin-top: var(--s-4);
+}
+
+.steps {
+  margin-top: var(--s-12);
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.steps li {
+  display: flex;
+  gap: var(--s-4);
+  align-items: baseline;
+  padding: var(--s-4) 0;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--step-1);
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  transition: color var(--dur-3) var(--ease-out);
+}
+
+.steps li span {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.steps li.lit {
+  color: var(--fg);
+}
+
+.steps li.lit span {
+  color: var(--accent);
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-8);
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.more svg {
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.more:hover svg {
+  transform: translateX(4px);
+}
+
+.side {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.panel {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: var(--s-8) var(--s-6) var(--s-12);
+}
+
+.panelTag {
+  position: absolute;
+  right: var(--s-4);
+  bottom: var(--s-4);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.diagram {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.wire {
+  fill: none;
+  stroke: var(--indigo);
+  stroke-width: 1.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.6;
+}
+
+.box {
+  fill: var(--paper);
+  stroke: var(--line-light);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  fill: var(--slate);
+}
+
+.engine {
+  fill: var(--ink);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: engine 4s var(--ease-out) infinite;
+}
+
+.engineText {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  fill: #fff;
+}
+
+.engine + .engineText + .label {
+  fill: #a19eb8;
+}
+
+.packet {
+  fill: var(--violet);
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.wired .packet {
+  opacity: 1;
+}
+
+/* The engine pulses once as packets arrive (around 45% of each loop) */
+@keyframes engine {
+  0%,
+  40% {
+    transform: scale(1);
+  }
+  47% {
+    transform: scale(1.06);
+  }
+  56%,
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Example console */
+.console {
+  background: var(--ink);
+  color: #eceaf6;
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  min-height: 220px;
+}
+
+.consoleHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #a19eb8;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--s-4);
+}
+
+.tag {
+  border: 1px solid var(--line-dark);
+  border-radius: var(--r-pill);
+  padding: 2px 10px;
+}
+
+.request {
+  color: #eceaf6;
+  max-width: none;
+  font-size: 0.875rem;
+}
+
+.prompt {
+  color: var(--orchid);
+}
+
+.caret {
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: #eceaf6;
+  animation: blink 1s steps(1) infinite;
+}
+
+.plan {
+  margin-top: var(--s-4);
+  display: grid;
+  gap: 4px;
+  color: #a19eb8;
+}
+
+.plan li {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+
+.plan li.shown {
+  opacity: 1;
+  transform: none;
+}
+
+.plan li:last-child {
+  color: #eceaf6;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-12);
+  }
+}
+
+@media (max-width: 560px) {
+  .panel {
+    padding: var(--s-4) var(--s-3) var(--s-12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .packet {
+    display: none;
+  }
+
+  .wire {
+    stroke-dashoffset: 0;
+  }
+}

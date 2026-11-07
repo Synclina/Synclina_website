@@ -1,40 +1,58 @@
 /* ── Page hero ── */
 .hero {
   position: relative;
-  padding: 11rem 0 5rem;
-  overflow: hidden;
-}
-
-.heroOrb {
-  width: 700px;
-  height: 700px;
-  top: -30%;
-  right: -10%;
+  padding: calc(var(--nav-h) + var(--s-24)) 0 var(--s-16);
+  border-bottom: 1px solid var(--line);
 }
 
 .title {
-  font-size: clamp(2.75rem, 8vw, 6.5rem);
-  letter-spacing: -0.045em;
-  line-height: 1;
-  max-width: 1000px;
-  margin-bottom: 1.75rem;
-}
-
-.wordMask {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
-  padding-bottom: 0.1em;
-  margin-right: 0.22em;
-}
-
-.wordMask > span {
-  display: inline-block;
+  font-size: var(--step-3);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  max-width: 18ch;
+  margin-bottom: var(--s-6);
 }
 
 .lead {
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-  max-width: 620px;
+  font-size: var(--step-1);
+  line-height: 1.5;
+  max-width: 52ch;
+}
+
+/* ── Build log milestones ── */
+.milestones {
+  border-top: 1px solid var(--line);
+}
+
+.milestones li {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: var(--s-6);
+  padding: var(--s-6) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.milestones li > span {
+  font-size: 0.875rem;
+  color: var(--muted);
+  padding-top: 4px;
+}
+
+.milestones h3 {
+  font-size: var(--step-1);
+  font-weight: 400;
+}
+
+.milestones p {
+  margin-top: var(--s-2);
+}
+
+@media (max-width: 640px) {
+  .milestones li {
+    grid-template-columns: 1fr;
+    gap: var(--s-2);
+  }
 }
 
 /* ── About ── */
@@ -316,7 +334,7 @@
 }
 
 .cap:hover {
-  background: radial-gradient(circle at 0% 0%, rgba(168, 85, 247, 0.1), transparent 70%);
+  background: var(--panel);
 }
 
 .capNum {
@@ -421,8 +439,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: #fff;
-  background: radial-gradient(circle at 30% 30%, #7c22ff, #2a0a7a);
-  box-shadow: 0 0 0 6px var(--bg-primary), 0 0 30px rgba(124, 34, 255, 0.6);
+  background: var(--lift);
 }
 
 .step h3 {
@@ -536,15 +553,12 @@
   padding: 2rem;
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-glass);
-  background:
-    radial-gradient(circle at 1px 1px, rgba(168, 85, 247, 0.08) 1px, transparent 0) 0 0 / 22px 22px,
-    linear-gradient(160deg, #140a2e, #08060f 60%);
+  background: var(--night-2);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 40px 100px -40px rgba(124, 34, 255, 0.7);
 }
 
 .founderGlow {
@@ -555,9 +569,7 @@
   width: 120%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 34, 255, 0.4), transparent 60%);
-  filter: blur(30px);
-  animation: pulse-glow 6s ease-in-out infinite;
+  display: none;
 }
 
 .monogram {
@@ -570,10 +582,7 @@
   font-weight: 700;
   letter-spacing: -0.06em;
   line-height: 1;
-  background: linear-gradient(135deg, #fff 10%, #a855f7 60%, #d946ef);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #eceaf6;
 }
 
 .founderBadge {

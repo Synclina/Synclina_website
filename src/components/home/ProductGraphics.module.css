@@ -1,0 +1,387 @@
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+  color: #eceaf6;
+}
+
+.example {
+  position: absolute;
+  right: var(--s-4);
+  bottom: var(--s-4);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a19eb8;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--r-pill);
+  padding: 2px 10px;
+}
+
+.svgLabel {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  fill: #a19eb8;
+}
+
+/* Every loop is paused until its stage is in view */
+.stage :is(*, *::before, *::after) {
+  animation-play-state: paused !important;
+}
+
+.stage[data-play] :is(*, *::before, *::after) {
+  animation-play-state: running !important;
+}
+
+/* ── DrivSync exploded device ── */
+.device {
+  perspective: 1400px;
+}
+
+.rig {
+  position: relative;
+  width: 240px;
+  height: 440px;
+  transform-style: preserve-3d;
+  transform: rotateX(14deg) rotateY(-22deg) rotateZ(2deg);
+  transition: transform var(--dur-4) var(--ease-out);
+}
+
+.layer {
+  position: absolute;
+  border-radius: 18px;
+  transition: transform var(--dur-4) var(--ease-out);
+  backface-visibility: hidden;
+}
+
+.phone {
+  inset: 0;
+  padding: 18px 16px;
+  background: #0b0816;
+  border: 1px solid #2c2744;
+  border-radius: 34px;
+  box-shadow: var(--shadow-float);
+}
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #a19eb8;
+  margin-bottom: 26px;
+}
+
+.screenTitle {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a19eb8;
+}
+
+.metric {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1;
+  color: #eceaf6;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric small {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #a19eb8;
+}
+
+.rows {
+  margin-top: 26px;
+  display: grid;
+  gap: 2px;
+}
+
+.rows li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #221d38;
+  font-size: 12px;
+  color: #cfcbe3;
+}
+
+.rows li span:last-child {
+  font-family: var(--font-mono);
+  color: #a19eb8;
+}
+
+.cardLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a19eb8;
+}
+
+.fuel {
+  left: 16px;
+  right: 16px;
+  bottom: 18px;
+  padding: 14px;
+  background: #120e22;
+  border: 1px solid #2c2744;
+}
+
+.gauge {
+  width: 100%;
+  margin-top: 6px;
+  overflow: visible;
+}
+
+.gaugeTrack,
+.gaugeFill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.gaugeTrack {
+  stroke: #25213a;
+}
+
+.gaugeFill {
+  stroke: var(--lift);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0.35;
+  animation: gauge 5s var(--ease-inout) infinite;
+}
+
+.needle {
+  stroke: #eceaf6;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transform-origin: 60px 64px;
+  transform: rotate(27deg);
+  animation: needle 5s var(--ease-inout) infinite;
+}
+
+.hub {
+  fill: #eceaf6;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 46px;
+  margin-top: 10px;
+}
+
+.bars i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 3px 3px 0 0;
+  background: #3b3558;
+  transform-origin: 50% 100%;
+  animation: bar 5s var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * 70ms);
+}
+
+.bars i:nth-child(4) {
+  background: var(--violet);
+}
+
+.copilot {
+  left: 16px;
+  right: 16px;
+  top: 212px;
+  padding: 12px 14px;
+  background: #16112b;
+  border: 1px solid #3b3558;
+  border-radius: 14px;
+}
+
+.copilot p {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #eceaf6;
+}
+
+/* Layers separate in Z on chapter enter or pointer enter */
+.exploded .rig {
+  transform: rotateX(18deg) rotateY(-30deg) rotateZ(2deg);
+}
+
+.exploded .fuel {
+  transform: translateZ(80px) translate(64px, 22px);
+}
+
+.exploded .copilot {
+  transform: translateZ(140px) translate(-72px, 14px);
+}
+
+@keyframes gauge {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  45%,
+  80% {
+    stroke-dashoffset: 0.35;
+  }
+  100% {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes needle {
+  0% {
+    transform: rotate(-90deg);
+  }
+  45%,
+  80% {
+    transform: rotate(27deg);
+  }
+  100% {
+    transform: rotate(-90deg);
+  }
+}
+
+@keyframes bar {
+  0% {
+    transform: scaleY(0.15);
+  }
+  40%,
+  85% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0.15);
+  }
+}
+
+/* ── Pipeline + travel ── */
+.pipeline svg,
+.travel svg {
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  overflow: visible;
+}
+
+.track {
+  fill: none;
+  stroke: #25213a;
+  stroke-width: 2;
+}
+
+.flow {
+  fill: none;
+  stroke: var(--violet);
+  stroke-width: 2;
+  stroke-dasharray: 6 12;
+  animation: flow 4s linear infinite;
+}
+
+.nodeRing {
+  fill: #0e0b1a;
+  stroke: #3b3558;
+  stroke-width: 1.5;
+  animation: nodeRing 4s linear infinite;
+  animation-delay: calc(var(--i) * 1s);
+}
+
+.nodeDot {
+  fill: #a19eb8;
+}
+
+.node .nodeDot {
+  animation: nodeDot 4s linear infinite;
+  animation-delay: calc(var(--i) * 1s);
+}
+
+.tripNode {
+  fill: #0e0b1a;
+  stroke: var(--violet);
+  stroke-width: 2;
+}
+
+.pulse {
+  fill: none;
+  stroke: var(--orchid);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -72;
+  }
+}
+
+@keyframes nodeRing {
+  0%,
+  22% {
+    stroke: var(--violet);
+  }
+  30%,
+  100% {
+    stroke: #3b3558;
+  }
+}
+
+@keyframes nodeDot {
+  0%,
+  22% {
+    fill: #eceaf6;
+  }
+  30%,
+  100% {
+    fill: #a19eb8;
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .rig {
+    transform: scale(0.85) rotateX(10deg) rotateY(-14deg);
+  }
+
+  .exploded .rig {
+    transform: scale(0.85) rotateX(12deg) rotateY(-18deg);
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage :is(*, *::before, *::after) {
+    animation: none !important;
+  }
+
+  .gaugeFill {
+    stroke-dashoffset: 0.35;
+  }
+
+  .pulse {
+    display: none;
+  }
+}

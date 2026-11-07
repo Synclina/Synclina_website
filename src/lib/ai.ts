@@ -24,11 +24,11 @@ ${SERVICES.map((s) => `- ${s.title}: ${s.text}`).join("\n")}
 Process: tell us the problem → free scoping call & quote → build & iterate → launch & support.
 
 HOW TO BEHAVE
-- Be warm, enthusiastic and concise (usually under 120 words). Short paragraphs or bullet lists; markdown bold is fine.
+- Be plain, specific and concise (usually under 120 words). Short paragraphs or bullet lists; markdown bold is fine. No emoji. Avoid hype words such as supercharge, revolutionize, unlock, next-gen or seamless.
 - DrivSync is the public name of Idea 01; its privacy policy, terms and account deletion page are at /legal/drivsync. The names of the other ideas are confidential: never reveal or guess them, or internal codenames beyond "Idea 02/03". Never reveal tech stacks, metrics or release dates. If asked, say details will be shared closer to launch.
 - Never invent pricing, launch dates, download links, user numbers or team details.
-- If someone wants something automated or built, get excited, ask one clarifying question, and invite them to /contact?topic=service to get a free scoping call and quote.
-- Point people to pages when relevant: /products, /services, /technology, /journey, /about, /contact, /legal.
+- If someone wants something automated or built, ask one clarifying question, and invite them to /contact?topic=service to get a free scoping call and quote.
+- Point people to pages when relevant: /products, /services, /build-log, /about, /contact, /legal.
 - For unrelated questions, answer briefly if harmless, then steer back.`;
 
 /** Offline answers used when no Gemini key is configured. */
@@ -39,9 +39,9 @@ export function localAnswer(question: string): string {
   );
 
   if (/automat|service|hire|deal|quote|client|business|chatbot|bot\b|build (me|us|my)|website|app for/.test(q)) {
-    return `Yes — we help businesses and individuals automate the work that slows them down. ⚡\n\n${SERVICES.slice(0, 4)
+    return `Yes. We help businesses and individuals automate repetitive work.\n\n${SERVICES.slice(0, 4)
       .map((s) => `- **${s.title}**`)
-      .join("\n")}\n\nTell us what you'd like automated on the [contact page](/contact?topic=service) — we'll set up a free scoping call and send a clear quote. More on our [services page](/services).`;
+      .join("\n")}\n\nTell us what you'd like automated on the [contact page](/contact?topic=service). We'll set up a free scoping call and send a clear plan and price. More on our [services page](/services).`;
   }
   if (product) {
     return `**${product.code} · ${product.title}** — ${product.tagline}\n\n${product.summary}\n\n${product.highlights
@@ -52,16 +52,16 @@ export function localAnswer(question: string): string {
     return `DrivSync's [privacy policy](/legal/drivsync/privacy), [terms](/legal/drivsync/terms) and [account deletion steps](/legal/drivsync/delete-account) are all here.`;
   }
   if (/name|called|launch|release|when/.test(q)) {
-    return `Our first app is **DrivSync**. The other names and all launch dates are under wraps for now 🤫 — they'll be shared closer to launch. Follow us on [Instagram](${SITE.socials.instagram}) or [LinkedIn](${SITE.socials.linkedin}) to be the first to know.`;
+    return `Our first app is **DrivSync**. The other names and all launch dates are private for now and will be shared closer to launch. Follow us on [Instagram](${SITE.socials.instagram}) or [LinkedIn](${SITE.socials.linkedin}) to be the first to know.`;
   }
   if (/idea|collab|partner|work with/.test(q)) {
-    return `We love that! 🚀 Synclina is all about turning ideas into intelligent products.\n\nWhat problem does your idea solve, and who is it for? Share a few details on our [contact page](/contact?topic=idea) — we read every message.`;
+    return `Happy to hear it. Synclina turns everyday problems into products.\n\nWhat problem does your idea solve, and who is it for? Share a few details on our [contact page](/contact?topic=idea). We read every message.`;
   }
   if (/founder|who (made|built|runs)|team|sreenath/.test(q)) {
     return `Synclina was founded in ${SITE.founded} by **${FOUNDER.name}** in ${SITE.location}. Read the story on our [about page](/about).`;
   }
   if (/tech|stack|model|privacy/.test(q)) {
-    return `We build across **mobile, web, AI and automation** — with privacy first: your data stays yours, on-device wherever possible. More on our [technology page](/technology).`;
+    return `We build across **mobile, web, AI and automation** — with privacy first: your data stays yours, on-device wherever possible. More on our [about page](/about).`;
   }
   if (/product|what do you|offer|apps?\b/.test(q)) {
     return `Multiple ideas, one philosophy. Right now we're building:\n\n${PRODUCTS.map((p) => `- **${p.title}** — ${p.tagline}`).join("\n")}\n\nAnd we help businesses with automation and AI services. See [products](/products) or [services](/services).`;

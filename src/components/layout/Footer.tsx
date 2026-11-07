@@ -1,87 +1,94 @@
 import Link from "next/link";
 import SynclinaMark from "@/components/brand/SynclinaMark";
 import SynclinaWordmark from "@/components/brand/SynclinaWordmark";
-import SocialIcon, { type SocialName } from "@/components/ui/SocialIcons";
+import Clock from "@/components/ui/Clock";
 import { PRODUCTS, SITE } from "@/lib/constants";
 import styles from "./Footer.module.css";
 
-const COMPANY = [
-  { label: "About", href: "/about" },
+const STUDIO = [
   { label: "Services", href: "/services" },
-  { label: "Technology", href: "/technology" },
-  { label: "Journey", href: "/journey" },
+  { label: "Build log", href: "/build-log" },
+  { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Footer() {
-  const socials = Object.entries(SITE.socials) as [SocialName, string][];
+const LEGAL = [
+  { label: "Privacy policy", href: "/legal/drivsync/privacy" },
+  { label: "Terms", href: "/legal/drivsync/terms" },
+  { label: "Account deletion (DrivSync)", href: "/legal/drivsync/delete-account" },
+];
 
+const SOCIAL_LABELS: Record<string, string> = { linkedin: "LinkedIn", instagram: "Instagram", github: "GitHub", x: "X" };
+
+export default function Footer() {
   return (
-    <footer className={styles.footer}>
-      <div className={styles.glowLine} aria-hidden="true" />
-      <div className={`container ${styles.grid}`}>
+    <footer className={`surface-night ${styles.footer}`}>
+      <div className={`container ${styles.top}`}>
         <div className={styles.brand}>
           <Link href="/" className={styles.logo} aria-label="Synclina home">
-            <SynclinaMark size={34} />
-            <SynclinaWordmark height={15} />
+            <SynclinaMark size={28} />
+            <SynclinaWordmark height={12} />
           </Link>
-          <p className={styles.tagline}>
-            IDEAS IN <span>SYNC</span>.
-          </p>
+          <p className={styles.tagline}>Ideas in Sync.</p>
           <p className={styles.blurb}>
-            Human-first AI that turns everyday problems into useful products. Multiple ideas, one philosophy.
+            An AI product studio in {SITE.location}. Our own apps, and custom automations for businesses.
           </p>
-          <div className={styles.socials}>
-            {socials.map(([k, url]) => (
-              <a key={k} href={url} target="_blank" rel="noreferrer" aria-label={`Synclina on ${k}`}>
-                <SocialIcon name={k} />
-              </a>
-            ))}
-          </div>
+          <a href={`mailto:${SITE.email}`} className={`link-draw ${styles.email}`}>
+            {SITE.email}
+          </a>
+          <p className={styles.note}>We read every message.</p>
         </div>
 
         <nav className={styles.col} aria-label="Products">
-          <h4>Products</h4>
+          <h2>Products</h2>
           {PRODUCTS.map((p) => (
-            <Link key={p.slug} href={`/products/${p.slug}`} style={{ "--accent": p.accent } as React.CSSProperties}>
-              <i />
+            <Link key={p.slug} href={`/products/${p.slug}`} className="link-draw">
               {p.title}
             </Link>
           ))}
-          <Link href="/products">All ideas →</Link>
         </nav>
 
-        <nav className={styles.col} aria-label="Company">
-          <h4>Company</h4>
-          {COMPANY.map((l) => (
-            <Link key={l.label} href={l.href}>
+        <nav className={styles.col} aria-label="Studio">
+          <h2>Studio</h2>
+          {STUDIO.map((l) => (
+            <Link key={l.href} href={l.href} className="link-draw">
               {l.label}
             </Link>
           ))}
         </nav>
 
         <nav className={styles.col} aria-label="Legal">
-          <h4>Legal</h4>
-          <Link href="/legal/drivsync/privacy">Privacy policy</Link>
-          <Link href="/legal/drivsync/terms">Terms</Link>
-          <Link href="/legal/drivsync/delete-account">Delete account</Link>
+          <h2>Legal</h2>
+          {LEGAL.map((l) => (
+            <Link key={l.href} href={l.href} className="link-draw">
+              {l.label}
+            </Link>
+          ))}
         </nav>
 
-        <div className={styles.col}>
-          <h4>Work with us</h4>
-          <Link href="/contact?topic=service">Request a service</Link>
-          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-          <span className={styles.note}>{SITE.location} · We read every message.</span>
-        </div>
+        <nav className={styles.col} aria-label="Social">
+          <h2>Social</h2>
+          {Object.entries(SITE.socials).map(([k, url]) => (
+            <a key={k} href={url} target="_blank" rel="noreferrer" className="link-draw">
+              {SOCIAL_LABELS[k] ?? k}
+            </a>
+          ))}
+        </nav>
       </div>
 
       <div className={`container ${styles.bottom}`}>
-        <span>© {new Date().getFullYear()} Synclina. All rights reserved.</span>
-        <span>Built with love by Synclina</span>
+        <span>© {new Date().getFullYear()} Synclina</span>
+        <span>
+          {SITE.location} · <Clock />
+        </span>
       </div>
 
-      <div className={styles.giant} aria-hidden="true">
-        <SynclinaWordmark height={200} className={styles.giantSvg} />
+      <div className={`lines ${styles.giant}`} aria-hidden="true">
+        <span className="line">
+          <span>
+            <SynclinaWordmark height={200} className={styles.giantSvg} letterAttr="data-letter" />
+          </span>
+        </span>
       </div>
     </footer>
   );

@@ -1,13 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import { useReveal } from "@/hooks/useReveal";
 import { CAPABILITIES } from "@/lib/constants";
 import styles from "./Pages.module.css";
 
 export default function Capabilities() {
   const root = useRef<HTMLElement>(null);
-  useReveal(root);
   return (
     <section ref={root} className="section">
       <div className="container">

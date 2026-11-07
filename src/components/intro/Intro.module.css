@@ -1,0 +1,97 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  background: var(--night);
+  color: #eceaf6;
+}
+
+.center {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-6);
+}
+
+.ribbon {
+  width: 120px;
+  height: auto;
+}
+
+.ribbon path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.word {
+  opacity: 0;
+  letter-spacing: 0;
+}
+
+.skip {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a19eb8;
+  padding: var(--s-2) var(--s-3);
+}
+
+.skip:hover {
+  color: #fff;
+}
+
+/* Timeline (total 1.4s) */
+.play .ribbon path {
+  animation: draw 900ms var(--ease-inout) forwards;
+}
+
+.play .ribbon path + path {
+  animation-delay: 80ms;
+}
+
+.play .word {
+  animation: fade 300ms var(--ease-out) 600ms forwards;
+}
+
+.play {
+  animation: lift 500ms var(--ease-out) 900ms forwards;
+}
+
+.lifting {
+  animation: lift 500ms var(--ease-out) forwards !important;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lift {
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@media (max-width: 640px) {
+  .ribbon {
+    width: 88px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}

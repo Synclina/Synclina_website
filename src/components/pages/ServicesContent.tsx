@@ -4,18 +4,16 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { Bot, Megaphone, Plug, Smartphone, Sparkles, Workflow } from "lucide-react";
-import { useReveal } from "@/hooks/useReveal";
+import { Bot, FlaskConical, Megaphone, Plug, Smartphone, Workflow } from "lucide-react";
 import { SERVICES, SERVICE_STEPS } from "@/lib/constants";
 import styles from "./Pages.module.css";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const ICONS = { workflow: Workflow, bot: Bot, megaphone: Megaphone, smartphone: Smartphone, plug: Plug, sparkles: Sparkles };
+const ICONS = { workflow: Workflow, bot: Bot, megaphone: Megaphone, smartphone: Smartphone, plug: Plug, flask: FlaskConical };
 
 export default function ServicesContent() {
   const root = useRef<HTMLDivElement>(null);
-  useReveal(root);
 
   useGSAP(
     () => {

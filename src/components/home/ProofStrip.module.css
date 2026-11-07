@@ -1,0 +1,90 @@
+.proof {
+  padding: var(--s-24) 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.fact {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--s-3);
+  padding: var(--s-6) var(--s-6) var(--s-6) 0;
+}
+
+.fact + .fact {
+  padding-left: var(--s-6);
+}
+
+/* Hairline dividers draw left to right */
+.fact::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--fg);
+  opacity: 0.85;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 600ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+.fact + .fact::after {
+  content: "";
+  position: absolute;
+  top: var(--s-6);
+  bottom: var(--s-6);
+  left: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+.seen .fact::before {
+  transform: scaleX(1);
+}
+
+.value {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.3rem + 2.2vw, 3.25rem);
+  white-space: nowrap;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 24ch;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    row-gap: var(--s-8);
+  }
+
+  .fact:nth-child(3) {
+    padding-left: 0;
+  }
+
+  .fact:nth-child(3)::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fact::before {
+    transform: scaleX(1);
+  }
+}

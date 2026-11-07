@@ -2,9 +2,7 @@
 
 import { useRef } from "react";
 import { Activity, BrainCircuit, ShieldCheck, Workflow } from "lucide-react";
-import AnimatedCounter from "@/components/ui/AnimatedCounter";
-import { useReveal } from "@/hooks/useReveal";
-import { PILLARS, STATS } from "@/lib/constants";
+import { PILLARS } from "@/lib/constants";
 import styles from "./TechSection.module.css";
 
 const ICONS = { brain: BrainCircuit, workflow: Workflow, activity: Activity, shield: ShieldCheck };
@@ -28,16 +26,9 @@ function Pillar({ pillar, i }: { pillar: (typeof PILLARS)[number]; i: number }) 
 
 export default function TechSection({ bare = false }: { bare?: boolean }) {
   const root = useRef<HTMLElement>(null);
-  useReveal(root);
 
   return (
     <section ref={root} id="tech" className={`section ${styles.tech}`}>
-      <div className={styles.streams} aria-hidden="true">
-        {Array.from({ length: 14 }, (_, i) => (
-          <span key={i} style={{ left: `${(i + 0.5) * (100 / 14)}%`, animationDelay: `${(i * 0.73) % 5}s`, animationDuration: `${4 + (i % 4)}s` }} />
-        ))}
-      </div>
-
       <div className="container">
         {!bare && (
         <header className="section-header">
@@ -60,16 +51,6 @@ export default function TechSection({ bare = false }: { bare?: boolean }) {
           ))}
         </div>
 
-        <div className={styles.stats}>
-          {STATS.map((s, i) => (
-            <div key={s.label} className={styles.stat} data-reveal data-reveal-delay={i * 0.08}>
-              <strong>
-                <AnimatedCounter value={s.value} suffix={s.suffix} />
-              </strong>
-              <span>{s.label}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

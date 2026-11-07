@@ -18,12 +18,11 @@ import {
   Lock,
   MessageSquareQuote,
   Rocket,
-  Sparkles,
+  MessageCircle,
   Star,
 } from "lucide-react";
 import PhoneMockup from "@/components/ui/PhoneMockup";
 import Button from "@/components/ui/Button";
-import { useReveal } from "@/hooks/useReveal";
 import { openAgent } from "@/lib/agent";
 import { PRODUCTS, formatUpdateDate, getProduct, updatesFor } from "@/lib/constants";
 import styles from "./ProductDetail.module.css";
@@ -56,7 +55,6 @@ export default function ProductDetail({ slug }: { slug: string }) {
   const root = useRef<HTMLDivElement>(null);
   const heroPhone = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState("overview");
-  useReveal(root);
 
   const idx = PRODUCTS.findIndex((p) => p.slug === slug);
   const next = PRODUCTS[(idx + 1) % PRODUCTS.length];
@@ -126,7 +124,7 @@ export default function ProductDetail({ slug }: { slug: string }) {
                 <Bell size={16} /> Get early access
               </Button>
               <Button variant="secondary" onClick={() => openAgent(`Tell me about ${product.title}`)}>
-                <Sparkles size={16} /> Ask the AI
+                <MessageCircle size={16} /> Ask the AI
               </Button>
             </div>
           </div>

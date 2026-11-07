@@ -5,7 +5,6 @@ import { BrainCircuit, Cpu, Lightbulb, MapPin, ShieldCheck, Smartphone, Users, W
 import SynclinaMark from "@/components/brand/SynclinaMark";
 import SocialIcon from "@/components/ui/SocialIcons";
 import Button from "@/components/ui/Button";
-import { useReveal } from "@/hooks/useReveal";
 import { FOUNDER, SITE } from "@/lib/constants";
 import styles from "./Pages.module.css";
 
@@ -32,7 +31,6 @@ const VALUES = [
 export default function AboutContent() {
   const root = useRef<HTMLDivElement>(null);
   const card = useRef<HTMLDivElement>(null);
-  useReveal(root);
 
   return (
     <div ref={root}>

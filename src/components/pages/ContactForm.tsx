@@ -2,10 +2,9 @@
 
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, CheckCircle2, Mail, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Mail, MapPin, MessageCircle } from "lucide-react";
 import SocialIcon, { type SocialName } from "@/components/ui/SocialIcons";
 import Button from "@/components/ui/Button";
-import { useReveal } from "@/hooks/useReveal";
 import { openAgent } from "@/lib/agent";
 import { SITE } from "@/lib/constants";
 import styles from "./Pages.module.css";
@@ -30,7 +29,6 @@ export default function ContactForm() {
   const [state, setState] = useState<"idle" | "sending" | "sent" | "mailto" | "error">("idle");
   const [error, setError] = useState("");
   const root = useRef<HTMLDivElement>(null);
-  useReveal(root);
 
   const isService = topic === "service";
 
@@ -176,7 +174,7 @@ export default function ContactForm() {
 
         <aside className={styles.aside}>
           <div id="ai" className={`glass-card ${styles.asideCard}`} data-reveal data-reveal-delay="0.1">
-            <Sparkles size={22} />
+            <MessageCircle size={22} />
             <h3>Or just talk to our AI</h3>
             <p>Instant answers about what we&apos;re building, our services, and how we could help.</p>
             <Button variant="secondary" onClick={() => openAgent()}>

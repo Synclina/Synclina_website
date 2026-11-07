@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/pages/PageHero";
 import AboutContent from "@/components/pages/AboutContent";
-import PageCTA from "@/components/pages/PageCTA";
+import ClosingCTA from "@/components/home/ClosingCTA";
 import { FOUNDER } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -20,13 +20,7 @@ export default function AboutPage() {
         lead="A human-first AI studio from Hyderabad, turning everyday problems into intelligent products and helping businesses automate the rest."
       />
       <AboutContent />
-      <PageCTA
-        title="Join the"
-        accent="journey."
-        text="Follow along, try our products early, or bring us the next idea worth building."
-        primary={{ label: "Get in touch", href: "/contact" }}
-        secondary={{ label: "See the journey", href: "/journey" }}
-      />
+      <ClosingCTA title="Bring us the next idea." sub="Try our products early, or tell us what to build next." label="Get in touch" href="/contact" />
     </>
   );
 }

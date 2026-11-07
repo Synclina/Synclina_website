@@ -1,0 +1,195 @@
+.section {
+  padding-top: var(--s-32);
+}
+
+.head {
+  margin-bottom: var(--s-16);
+}
+
+.h2 {
+  max-width: 22ch;
+}
+
+.pin {
+  position: relative;
+}
+
+.chapters {
+  position: relative;
+  display: grid;
+  gap: var(--s-16);
+  padding-bottom: var(--s-32);
+}
+
+/* Stacked (phones, reduced motion): each chapter is a full-width card */
+.item {
+  display: grid;
+  gap: var(--s-6);
+}
+
+.visual {
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line-dark);
+  background: var(--night-2);
+  overflow: hidden;
+  min-height: 380px;
+}
+
+.stagePanel,
+.rail {
+  display: none;
+}
+
+.code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.code span {
+  color: var(--fg);
+}
+
+.title {
+  margin-top: var(--s-4);
+  font-size: var(--step-3);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.tagline {
+  margin-top: var(--s-3);
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+
+.does {
+  margin-top: var(--s-4);
+  max-width: 44ch;
+}
+
+.meter {
+  margin-top: var(--s-8);
+  max-width: 360px;
+}
+
+.meterHead {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--muted);
+  margin-bottom: var(--s-2);
+}
+
+.meterHead span:last-child {
+  color: var(--fg);
+}
+
+.track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.track i {
+  display: block;
+  height: 100%;
+  background: var(--gradient);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform var(--dur-4) var(--ease-out) 120ms;
+}
+
+.on .track i {
+  transform: scaleX(var(--level));
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-8);
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.more svg {
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.more:hover svg {
+  transform: translateX(4px);
+}
+
+/* Pinned chapters (desktop, motion OK): one stage, chapters swap in place */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .pin {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .chapters {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0 24px;
+    padding-bottom: 0;
+    height: min(640px, calc(100vh - var(--nav-h) - 64px));
+    margin-top: calc(var(--nav-h) / 2);
+  }
+
+  .item {
+    grid-area: 1 / 1 / 2 / -1;
+    grid-template-columns: subgrid;
+    align-items: center;
+    gap: 0 24px;
+  }
+
+  .text {
+    grid-column: 2 / 6;
+  }
+
+  .visual {
+    grid-column: 6 / -1;
+    height: 100%;
+    border: 0;
+    background: transparent;
+  }
+
+  .stagePanel {
+    display: block;
+    grid-area: 1 / 6 / 2 / -1;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--line-dark);
+    background: var(--night-2);
+  }
+
+  .rail {
+    display: block;
+    grid-area: 1 / 1 / 2 / 2;
+    justify-self: start;
+    width: 2px;
+    height: 100%;
+    background: var(--line);
+    border-radius: 1px;
+  }
+
+  .rail i {
+    display: block;
+    height: 100%;
+    background: var(--gradient);
+    border-radius: 1px;
+    transform-origin: 50% 0;
+    transform: scaleY(0.3333);
+  }
+
+  :global(.js) .item:not(:first-of-type) [data-chapter-text],
+  :global(.js) .item:not(:first-of-type) [data-chapter-visual] {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

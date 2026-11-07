@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/pages/PageHero";
-import ProductsSection from "@/components/sections/ProductsSection";
-import PageCTA from "@/components/pages/PageCTA";
+import ProductChapters from "@/components/home/ProductChapters";
+import ClosingCTA from "@/components/home/ClosingCTA";
 
 export const metadata: Metadata = {
   title: "Products",
-  description: "Multiple ideas, one philosophy — AI-powered products for everyday problems, from DrivSync for drivers and riders to creators and travel.",
+  description: "DrivSync for drivers and riders, Creator Automation for creators and small businesses, and Travel Planning for trips with others. Stages and updates for each.",
   alternates: { canonical: "/products" },
 };
 
@@ -16,16 +16,10 @@ export default function ProductsPage() {
         label="Products"
         title="Multiple ideas."
         accent="One philosophy."
-        lead="Every idea starts with an everyday problem and an AI-first answer. DrivSync comes first, for everyday drivers and riders. The other two get their names closer to launch."
+        lead="Every product starts with an everyday problem. DrivSync comes first, for everyday drivers and riders. The other two get their names closer to launch."
       />
-      <ProductsSection />
-      <PageCTA
-        title="Want early"
-        accent="access?"
-        text="Be the first to try what we're building, or tell us which problem we should solve next."
-        primary={{ label: "Join early access", href: "/contact?topic=early-access" }}
-        secondary={{ label: "Follow the journey", href: "/journey" }}
-      />
+      <ProductChapters heading={false} />
+      <ClosingCTA title="Want early access?" sub="Be first to try what we're building, or tell us which problem to solve next." label="Join early access" href="/contact?topic=early-access" />
     </>
   );
 }

@@ -1,0 +1,122 @@
+.cta {
+  padding: var(--s-32) 0;
+  overflow: hidden;
+}
+
+.inner {
+  position: relative;
+}
+
+/* A line drops in from the section above and runs into the button */
+.wire {
+  position: absolute;
+  left: 24px;
+  top: calc(-1 * var(--s-32));
+  width: 200px;
+  height: calc(100% + var(--s-32) - 24px);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.wire path {
+  fill: none;
+  stroke: var(--indigo);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset var(--dur-5) var(--ease-inout);
+}
+
+[data-in] > .wire path {
+  stroke-dashoffset: 0;
+}
+
+.title,
+.sub,
+.actions {
+  position: relative;
+  margin-left: var(--s-12);
+}
+
+.title {
+  font-size: var(--step-4);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  max-width: 14ch;
+}
+
+.sub {
+  margin-top: var(--s-6);
+  font-size: var(--step-1);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-6);
+  margin-top: var(--s-12);
+}
+
+.button {
+  transition: background-color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+
+.email {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--fg);
+  user-select: all;
+}
+
+.copy {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  user-select: none;
+}
+
+.copy:hover {
+  color: var(--fg);
+  background: var(--line);
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: var(--step-3);
+  }
+
+  .title,
+  .sub,
+  .actions {
+    margin-left: var(--s-8);
+  }
+
+  .wire {
+    left: 16px;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wire path {
+    stroke-dashoffset: 0;
+  }
+}

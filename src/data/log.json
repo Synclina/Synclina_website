@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2026-10-29",
+    "product": "drivsync",
+    "title": "Smart Mobility is now DrivSync",
+    "notes": ["A new name for the same app", "Privacy policy and terms published under the new name"]
+  },
+  {
+    "date": "2026-10-01",
+    "product": "drivsync",
+    "title": "Second major internal build",
+    "notes": ["Redesigned experience end to end", "Expanded automated test coverage"]
+  },
+  {
+    "date": "2026-09-25",
+    "product": "travel",
+    "title": "Core experience in progress",
+    "notes": ["Planning flow designed", "First features being built"]
+  },
+  {
+    "date": "2026-08-20",
+    "product": "creator-growth",
+    "title": "Foundations complete",
+    "notes": ["Architecture and integrations set up", "Automation engine groundwork laid"]
+  },
+  {
+    "date": "2026-05-15",
+    "product": "drivsync",
+    "title": "Development kicks off",
+    "notes": ["Use case validated", "First designs and prototypes"]
+  }
+]
