@@ -165,6 +165,7 @@ export default function AgentWidget() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask anything about Synclina…"
+            suppressHydrationWarning
             maxLength={2000}
             aria-label="Message"
           />

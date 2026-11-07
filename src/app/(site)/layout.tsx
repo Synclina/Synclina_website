@@ -89,7 +89,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning data-intro="pending" data-scroll-behavior="smooth" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add("js")` }} />
+        <script dangerouslySetInnerHTML={{ __html: `(function(d){d.classList.add("js");try{if(sessionStorage.getItem("synclina-intro-seen")==="1"||matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("intro-seen")}catch(e){}})(document.documentElement)` }} />
         <noscript>
           <style>{`#intro{display:none!important}html[data-intro]{overflow:auto}`}</style>
         </noscript>

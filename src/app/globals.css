@@ -456,6 +456,11 @@ time {
 }
 
 /* ── APP SHELL ── */
+/* Returning visitors never see a flash of the intro doors */
+html.intro-seen #intro {
+  display: none;
+}
+
 html[data-intro="pending"],
 html[data-intro="pending"] body {
   overflow: hidden;

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Ribbon from "@/components/brand/Ribbon";
+import SynclinaMark from "@/components/brand/SynclinaMark";
 import Clock from "@/components/ui/Clock";
 import { formatUpdateDate, latestUpdates, productBySlug } from "@/lib/constants";
 import { onIntroDone, prefersReducedMotion } from "@/lib/scroll";
@@ -14,7 +14,7 @@ import styles from "./Hero.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HeroRibbon = dynamic(() => import("@/components/three/HeroRibbon"), { ssr: false });
+const HeroMark = dynamic(() => import("@/components/three/HeroMark"), { ssr: false });
 
 const latest = latestUpdates(1)[0];
 
@@ -84,9 +84,9 @@ export default function Hero() {
 
         <div className={styles.visual}>
           <div className={`${styles.fallback} ${ready3d && !failed3d ? styles.hide : ""}`}>
-            <Ribbon size="100%" title="Synclina ribbon: two strokes locking together" />
+            <SynclinaMark size="100%" title="The Synclina mark" />
           </div>
-          {mount3d && !failed3d && <HeroRibbon onReady={onReady} onFail={onFail} />}
+          {mount3d && !failed3d && <HeroMark onReady={onReady} onFail={onFail} />}
         </div>
       </div>
 

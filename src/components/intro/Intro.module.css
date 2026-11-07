@@ -2,91 +2,120 @@
   position: fixed;
   inset: 0;
   z-index: var(--z-modal);
-  display: grid;
-  place-items: center;
-  background: var(--night);
+  perspective: 1800px;
+  overflow: hidden;
   color: #eceaf6;
 }
 
-.center {
-  display: grid;
-  justify-items: center;
+/* Two identical full-screen night panels, each clipped to one half */
+.door {
+  position: absolute;
+  inset: 0;
+  background: var(--night);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.left {
+  clip-path: inset(0 50% 0 0);
+  transform-origin: 0% 50%;
+}
+
+.right {
+  clip-path: inset(0 0 0 50%);
+  transform-origin: 100% 50%;
+}
+
+/* The seam: a 1px brand-gradient line down the centre, no glow */
+.seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  margin-left: -0.5px;
+  background: linear-gradient(180deg, transparent, #4a12ff 20%, #7c22ff 50%, #c42bff 80%, transparent);
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: var(--s-6);
 }
 
-.ribbon {
-  width: 120px;
+.mark {
+  width: clamp(112px, 16vw, 188px);
   height: auto;
-}
-
-.ribbon path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
+  overflow: visible;
 }
 
 .word {
+  display: flex;
+  justify-content: center;
+  line-height: 0;
+}
+
+.wordSvg {
+  width: clamp(220px, 34vw, 420px);
+  height: auto;
+}
+
+.tagline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #a19eb8;
   opacity: 0;
-  letter-spacing: 0;
+}
+
+.corner {
+  position: absolute;
+  bottom: clamp(16px, 4vh, 32px);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6f6b88;
+}
+
+.cornerLeft {
+  left: clamp(16px, 4vw, 40px);
+}
+
+.cornerRight {
+  right: clamp(16px, 4vw, 40px);
 }
 
 .skip {
   position: absolute;
   top: 20px;
-  right: 24px;
-  font-family: var(--font-display);
-  font-size: 12px;
-  letter-spacing: 0.22em;
+  right: clamp(16px, 4vw, 40px);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #a19eb8;
   padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--line-dark);
+  border-radius: var(--r-pill);
+  transition: color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
 }
 
 .skip:hover {
   color: #fff;
+  border-color: #4a4566;
 }
 
-/* Timeline (total 1.4s) */
-.play .ribbon path {
-  animation: draw 900ms var(--ease-inout) forwards;
-}
-
-.play .ribbon path + path {
-  animation-delay: 80ms;
-}
-
-.play .word {
-  animation: fade 300ms var(--ease-out) 600ms forwards;
-}
-
-.play {
-  animation: lift 500ms var(--ease-out) 900ms forwards;
-}
-
-.lifting {
-  animation: lift 500ms var(--ease-out) forwards !important;
-}
-
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes fade {
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes lift {
-  to {
-    transform: translateY(-100%);
-  }
-}
-
-@media (max-width: 640px) {
-  .ribbon {
-    width: 88px;
+@media (max-width: 600px) {
+  .cornerLeft {
+    display: none;
   }
 }
 
