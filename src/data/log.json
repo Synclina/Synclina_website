@@ -27,7 +27,7 @@
     "date": "2026-06",
     "product": "drivsync",
     "title": "First major internal build",
-    "notes": []
+    "notes": ["First complete working version, tested internally", "Core tracking for trips, fuel and expenses in place"]
   },
   {
     "date": "2026-05-15",
