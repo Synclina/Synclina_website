@@ -14,11 +14,12 @@
   /* surfaces and text */
   --night: #07050f;
   --night-2: #0e0b1a;
-  --paper: #f6f5fb;
+  --paper: #dcdae4; /* soft grey-lavender: light, but close enough to Night that the blend reads as one surface */
+  --paper-2: #e8e6ef; /* cards and panels on paper */
   --white: #ffffff;
   --ink: #0e0b1a;
   --slate: #5b5870;
-  --line-light: #e4e2ee;
+  --line-light: #c6c3d2;
   --line-dark: #25213a;
 
   /* status (UI states only, never decoration) */
@@ -150,7 +151,7 @@
   --muted: var(--slate);
   --line: var(--line-light);
   --accent: var(--indigo);
-  --panel: var(--white);
+  --panel: var(--paper-2);
 }
 
 .surface-night,
@@ -165,7 +166,7 @@
  * page fades from dark to light instead of cutting. Paper next to paper stays flat.
  */
 :root {
-  --blend: 112px;
+  --blend: 144px;
   --blend-fade: linear-gradient(
     to bottom,
     var(--night) 0%,
@@ -179,6 +180,11 @@
 
 .surface-paper {
   position: relative;
+}
+
+/* Keep text clear of the blend: paper sections get room for it top and bottom */
+.surface-paper.section {
+  padding-block: calc(var(--blend) + var(--s-8));
 }
 
 .surface-paper:not(.surface-paper + .surface-paper)::before,
@@ -203,7 +209,7 @@
 
 @media (max-width: 1024px) {
   :root {
-    --blend: 80px;
+    --blend: 96px;
   }
 }
 

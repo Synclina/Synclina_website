@@ -1,5 +1,5 @@
 .section {
-  padding-top: var(--s-32);
+  padding-top: calc(var(--blend) + var(--s-8));
 }
 
 .head {

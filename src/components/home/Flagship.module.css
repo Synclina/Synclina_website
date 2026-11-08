@@ -76,7 +76,7 @@
 
 .panel {
   position: relative;
-  background: var(--white);
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   padding: var(--s-8) var(--s-6) var(--s-12);
