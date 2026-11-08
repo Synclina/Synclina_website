@@ -1,12 +1,19 @@
+# Dependencies
 node_modules/
+
+# Next.js builds
 .next/
 .next-prod/
 out/
-.env*
-!.env.example
 *.tsbuildinfo
 next-env.d.ts
 
+# Vercel
 .vercel
+
+# Secrets: never commit real env files, only the example
 .env*
+!.env.example
+
+# Private planning docs
 Synclina_Web_Rehaul_Brief.md
