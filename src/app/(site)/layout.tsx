@@ -102,6 +102,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Navbar />
           <main id="main">{children}</main>
           <Footer />
+          {/* Page-transition veil: inside #site so it sits under the nav (see MotionLayer) */}
+          <div id="page-veil" className="page-veil" aria-hidden="true" />
         </div>
 
         <MotionLayer />

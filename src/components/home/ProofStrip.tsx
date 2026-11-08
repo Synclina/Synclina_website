@@ -45,7 +45,7 @@ export default function ProofStrip() {
   ];
 
   return (
-    <section ref={root} className={`surface-paper ${styles.proof} ${seen ? styles.seen : ""}`} aria-label="Facts about Synclina">
+    <section ref={root} className={`surface-paper ${styles.proof}`} aria-label="Facts about Synclina">
       <div className={`container ${styles.grid}`}>
         {facts.map((f, i) => (
           <div key={i} className={styles.fact} style={{ "--i": i } as React.CSSProperties}>

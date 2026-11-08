@@ -2,7 +2,6 @@
 .hero {
   position: relative;
   padding: calc(var(--nav-h) + var(--s-24)) 0 var(--s-16);
-  border-bottom: 1px solid var(--line);
 }
 
 .title {

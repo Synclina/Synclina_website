@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { finePointer, prefersReducedMotion, setLenis } from "@/lib/scroll";
+import { finePointer, getLenis, prefersReducedMotion, setLenis } from "@/lib/scroll";
 
 gsap.registerPlugin(ScrollTrigger);
+
+/** How long the veil takes to cover the page before the route changes (matches CSS). */
+const VEIL_IN = 280;
 
 const REVEAL = "[data-reveal]:not([data-in]), .lines:not([data-in])";
 
@@ -20,6 +23,7 @@ export default function MotionLayer() {
   const bar = useRef<HTMLDivElement>(null);
   const ring = useRef<HTMLDivElement>(null);
   const io = useRef<IntersectionObserver | null>(null);
+  const router = useRouter();
 
   // Smooth scroll + progress bar
   useEffect(() => {
@@ -97,9 +101,47 @@ export default function MotionLayer() {
     };
   }, []);
 
-  // New route: re-measure pinned scenes
+  // Page transitions: on an internal link, a night veil fades over the page (the nav
+  // stays put), the route changes underneath, then the veil lifts as the new page rises.
   useEffect(() => {
-    const id = requestAnimationFrame(() => ScrollTrigger.refresh());
+    const el = document.getElementById("page-veil");
+    if (!el) return;
+    let timer = 0;
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+      if (!a || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
+      const url = new URL(a.href, location.href);
+      if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      if (url.pathname.startsWith("/api/") || prefersReducedMotion()) return;
+      e.preventDefault(); // Next's <Link> skips its own navigation when this is set
+      el.classList.add("is-on");
+      getLenis()?.stop();
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        router.push(url.pathname + url.search + url.hash, { scroll: false });
+        // Never leave the page covered if a navigation stalls or fails
+        timer = window.setTimeout(() => {
+          el.classList.remove("is-on");
+          getLenis()?.start();
+        }, 6000);
+      }, VEIL_IN);
+    };
+    document.addEventListener("click", onClick, true);
+    return () => {
+      document.removeEventListener("click", onClick, true);
+      clearTimeout(timer);
+    };
+  }, [router]);
+
+  // New route: lift the veil, re-measure pinned scenes
+  useEffect(() => {
+    const el = document.getElementById("page-veil");
+    const id = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      getLenis()?.start();
+      el?.classList.remove("is-on");
+    });
     return () => cancelAnimationFrame(id);
   }, [pathname]);
 

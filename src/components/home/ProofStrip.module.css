@@ -1,5 +1,5 @@
 .proof {
-  padding: var(--s-24) 0;
+  padding: calc(var(--blend) + var(--s-12)) 0 var(--s-24);
 }
 
 .grid {
@@ -19,22 +19,6 @@
   padding-left: var(--s-6);
 }
 
-/* Hairline dividers draw left to right */
-.fact::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--fg);
-  opacity: 0.85;
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  transition: transform 600ms var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 80ms);
-}
-
 .fact + .fact::after {
   content: "";
   position: absolute;
@@ -43,10 +27,6 @@
   left: 0;
   width: 1px;
   background: var(--line);
-}
-
-.seen .fact::before {
-  transform: scaleX(1);
 }
 
 .value {
@@ -80,11 +60,5 @@
 
   .fact:nth-child(3)::after {
     display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fact::before {
-    transform: scaleX(1);
   }
 }

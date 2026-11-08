@@ -128,6 +128,10 @@
 
 /* Pinned chapters (desktop, motion OK): one stage, chapters swap in place */
 @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .section {
+    padding-bottom: var(--blend);
+  }
+
   .pin {
     height: 100vh;
     display: flex;

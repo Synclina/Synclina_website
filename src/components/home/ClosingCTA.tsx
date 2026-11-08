@@ -45,7 +45,7 @@ export default function ClosingCTA({
   };
 
   return (
-    <section className={`surface-paper ${styles.cta}`}>
+    <section className={`surface-night ${styles.cta}`}>
       <div className={`container ${styles.inner}`} data-reveal>
         <svg className={styles.wire} viewBox="0 0 200 240" preserveAspectRatio="none" aria-hidden="true">
           <path d="M8 0 V150 Q8 200 58 200 H200" pathLength={1} />

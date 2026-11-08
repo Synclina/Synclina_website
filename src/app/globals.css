@@ -159,6 +159,54 @@
   color: var(--fg);
 }
 
+/*
+ * Night ↔ paper: no hard edges. Wherever a paper section meets a dark one, its
+ * own top/bottom padding carries an eased gradient from the night colour, so the
+ * page fades from dark to light instead of cutting. Paper next to paper stays flat.
+ */
+:root {
+  --blend: 112px;
+  --blend-fade: linear-gradient(
+    to bottom,
+    var(--night) 0%,
+    color-mix(in oklab, var(--night) 90%, var(--paper)) 14%,
+    color-mix(in oklab, var(--night) 68%, var(--paper)) 34%,
+    color-mix(in oklab, var(--night) 40%, var(--paper)) 56%,
+    color-mix(in oklab, var(--night) 16%, var(--paper)) 78%,
+    var(--paper) 100%
+  );
+}
+
+.surface-paper {
+  position: relative;
+}
+
+.surface-paper:not(.surface-paper + .surface-paper)::before,
+.surface-paper:not(:has(+ .surface-paper))::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--blend);
+  background: var(--blend-fade);
+  pointer-events: none;
+}
+
+.surface-paper:not(.surface-paper + .surface-paper)::before {
+  top: 0;
+}
+
+.surface-paper:not(:has(+ .surface-paper))::after {
+  bottom: 0;
+  transform: scaleY(-1);
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --blend: 80px;
+  }
+}
+
 /* ── RESET ── */
 *,
 *::before,
@@ -492,6 +540,25 @@ html[data-intro="pending"] body {
 }
 
 /* Scroll progress hairline (under the nav) */
+/* Page transitions: a night veil under the nav. In fast (280ms), out slower so the new page eases in */
+.page-veil {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-sticky) - 1);
+  background: var(--night);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 420ms;
+}
+
+.page-veil.is-on {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 280ms cubic-bezier(0.65, 0, 0.35, 1), visibility 0s;
+}
+
 .scroll-progress {
   position: fixed;
   top: 0;
