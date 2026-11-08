@@ -186,8 +186,11 @@ export const stageLevel = (status: string) =>
 
 export const productBySlug = (slug: string) => PRODUCTS.find((p) => p.slug === slug);
 
+/** Log dates are "YYYY-MM-DD", or "YYYY-MM" when only the month is known. */
+export const isoDay = (iso: string) => (iso.length === 7 ? `${iso}-01` : iso);
+
 export const formatUpdateDate = (iso: string) =>
-  new Date(iso + "T00:00:00").toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  new Date(isoDay(iso) + "T00:00:00").toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
 /* ─────────────────────────── SERVICES ─────────────────────────── */
 

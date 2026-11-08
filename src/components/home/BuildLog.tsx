@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { PRODUCTS, latestUpdates, productBySlug } from "@/lib/constants";
+import { PRODUCTS, isoDay, latestUpdates, productBySlug } from "@/lib/constants";
 import { prefersReducedMotion } from "@/lib/scroll";
 import styles from "./BuildLog.module.css";
 
@@ -12,7 +12,7 @@ const FILTERS = [{ slug: "all", label: "All" }, ...PRODUCTS.map((p) => ({ slug: 
 
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 function relative(iso: string, now: number) {
-  const days = Math.round((new Date(iso + "T00:00:00+05:30").getTime() - now) / 86_400_000);
+  const days = Math.round((new Date(isoDay(iso) + "T00:00:00+05:30").getTime() - now) / 86_400_000);
   const abs = Math.abs(days);
   if (abs < 7) return rtf.format(days, "day");
   if (abs < 31) return rtf.format(Math.round(days / 7), "week");
@@ -104,7 +104,7 @@ export default function BuildLog({ heading = true, limit, id = "build-log" }: Pr
                     {e === newest && <i className={styles.dot} aria-label="Newest" />}
                     {e.title}
                   </h3>
-                  <p>{e.notes.join(" · ")}</p>
+                  {e.notes.length > 0 && <p>{e.notes.join(" · ")}</p>}
                 </div>
                 {product && (
                   <Link href={`/products/${product.slug}`} className={styles.tag}>

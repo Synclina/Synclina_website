@@ -15,7 +15,7 @@ export default function Home() {
       <ProductChapters />
       <Approach />
       <Flagship />
-      <BuildLog limit={5} />
+      <BuildLog limit={6} />
       <ClosingCTA />
     </>
   );

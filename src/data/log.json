@@ -24,6 +24,12 @@
     "notes": ["Architecture and integrations set up", "Automation engine groundwork laid"]
   },
   {
+    "date": "2026-06",
+    "product": "drivsync",
+    "title": "First major internal build",
+    "notes": []
+  },
+  {
     "date": "2026-05-15",
     "product": "drivsync",
     "title": "Development kicks off",
