@@ -123,7 +123,7 @@ export default function AgentWidget() {
 
   return (
     <>
-      <div ref={panel} className={`${styles.panel} ${open ? styles.open : ""}`} role="dialog" aria-modal="false" aria-label="Synclina AI chat" aria-hidden={!open}>
+      <div ref={panel} data-floating className={`${styles.panel} ${open ? styles.open : ""}`} role="dialog" aria-modal="false" aria-label="Synclina AI chat" aria-hidden={!open}>
         <header className={styles.header}>
           <div className={styles.avatar}>
             <SynclinaMark size={24} />
@@ -177,6 +177,7 @@ export default function AgentWidget() {
 
       <button
         ref={fab}
+        data-floating
         className={styles.fab}
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close Synclina AI" : "Open Synclina AI"}

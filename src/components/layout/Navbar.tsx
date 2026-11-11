@@ -44,15 +44,29 @@ export default function Navbar() {
     const lenis = getLenis();
     if (open) lenis?.stop();
     else lenis?.start();
-    document.documentElement.style.overflow = open ? "hidden" : "";
+    const html = document.documentElement;
+    html.style.overflow = open ? "hidden" : "";
+    if (open) html.dataset.menu = "open";
+    else delete html.dataset.menu;
     const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", esc);
     return () => window.removeEventListener("keydown", esc);
   }, [open]);
 
+  // Never leave the page locked if the navbar unmounts with the menu open
+  useEffect(
+    () => () => {
+      document.documentElement.style.overflow = "";
+      delete document.documentElement.dataset.menu;
+      getLenis()?.start();
+    },
+    [],
+  );
+
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   return (
+    <>
     <header
       className={`${styles.bar} ${solid || open ? styles.solid : ""} ${hidden && !open ? styles.hidden : ""} ${open ? styles.isOpen : ""}`}
     >
@@ -73,7 +87,7 @@ export default function Navbar() {
         </ul>
 
         <Link href="/contact?topic=service" className={`btn btn-primary btn-sm ${styles.cta}`}>
-          Book a call
+          Book a free call
         </Link>
 
         <button
@@ -87,7 +101,10 @@ export default function Navbar() {
           <span />
         </button>
       </nav>
+    </header>
 
+      {/* Sibling of the header, not a child: the header's backdrop-filter/transform would
+          otherwise become the containing block and squash this fixed layer to 72px. */}
       <div id="mobile-menu" className={styles.menu} hidden={!open}>
         <ul>
           {NAV_LINKS.map((l, i) => (
@@ -107,6 +124,6 @@ export default function Navbar() {
           Book a free call
         </Link>
       </div>
-    </header>
+    </>
   );
 }

@@ -95,9 +95,14 @@
 
 .menu {
   position: fixed;
-  inset: var(--nav-h) 0 0;
-  padding: var(--s-8) 16px calc(var(--s-8) + env(safe-area-inset-bottom));
-  background: var(--night);
+  inset: 0;
+  z-index: calc(var(--z-sticky) - 1); /* just under the bar, so the X stays tappable */
+  padding: calc(var(--nav-h) + var(--s-8)) 16px calc(var(--s-8) + env(safe-area-inset-bottom));
+  background: #07050f; /* fully opaque: nothing from the page shows through */
+  color: #eceaf6;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: menuIn var(--dur-2) var(--ease-out) both;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -105,6 +110,16 @@
 
 .menu[hidden] {
   display: none;
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+  }
+}
+
+.menu ul li {
+  overflow: hidden;
 }
 
 .menu ul {
