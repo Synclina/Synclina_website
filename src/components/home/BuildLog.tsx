@@ -76,18 +76,21 @@ export default function BuildLog({ heading = true, limit, id = "build-log" }: Pr
           </div>
         )}
 
-        <div className={styles.filters} role="group" aria-label="Filter the build log by product">
-          {FILTERS.map((f) => (
-            <button
-              key={f.slug}
-              className={styles.chip}
-              aria-pressed={filter === f.slug}
-              onClick={() => choose(f.slug)}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
+        {/* A short preview (home) is just the latest few; filtering lives on the full log */}
+        {!limit && (
+          <div className={styles.filters} role="group" aria-label="Filter the build log by product">
+            {FILTERS.map((f) => (
+              <button
+                key={f.slug}
+                className={styles.chip}
+                aria-pressed={filter === f.slug}
+                onClick={() => choose(f.slug)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <ol ref={list} className={styles.rows}>
           {rows.map((e, i) => {

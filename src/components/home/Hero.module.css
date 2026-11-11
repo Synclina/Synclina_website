@@ -96,11 +96,6 @@
   background: var(--ok);
 }
 
-.clock {
-  font-size: 0.8125rem;
-  color: var(--muted);
-}
-
 @media (max-width: 900px) {
   .hero {
     min-height: auto;

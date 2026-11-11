@@ -20,7 +20,7 @@ export default function ServicesPage() {
         accent="for businesses."
         lead="Repetitive tasks, customer replies, reports, a chatbot or a whole app. Tell us what's slowing you down. We'll scope it, quote it and build it."
       />
-      <Flagship />
+      <Flagship onServicesPage />
       <ServicesContent />
       <ClosingCTA />
     </>

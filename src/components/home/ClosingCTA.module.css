@@ -64,37 +64,6 @@
   transition: background-color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
 }
 
-.email {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  color: var(--fg);
-  user-select: all;
-}
-
-.copy {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--r-sm);
-  color: var(--muted);
-  user-select: none;
-}
-
-.copy:hover {
-  color: var(--fg);
-  background: var(--line);
-}
-
-.sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-}
-
 @media (max-width: 640px) {
   .title {
     font-size: var(--step-3);

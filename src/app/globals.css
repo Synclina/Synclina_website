@@ -14,12 +14,8 @@
   /* surfaces and text */
   --night: #07050f;
   --night-2: #0e0b1a;
-  --paper: #dcdae4; /* soft grey-lavender: light, but close enough to Night that the blend reads as one surface */
-  --paper-2: #e8e6ef; /* cards and panels on paper */
   --white: #ffffff;
   --ink: #0e0b1a;
-  --slate: #5b5870;
-  --line-light: #c6c3d2;
   --line-dark: #25213a;
 
   /* status (UI states only, never decoration) */
@@ -145,72 +141,9 @@
   --panel: var(--night-2);
 }
 
-.surface-paper {
-  --bg: var(--paper);
-  --fg: var(--ink);
-  --muted: var(--slate);
-  --line: var(--line-light);
-  --accent: var(--indigo);
-  --panel: var(--paper-2);
-}
-
-.surface-night,
-.surface-paper {
+.surface-night {
   background: var(--bg);
   color: var(--fg);
-}
-
-/*
- * Night ↔ paper: no hard edges. Wherever a paper section meets a dark one, its
- * own top/bottom padding carries an eased gradient from the night colour, so the
- * page fades from dark to light instead of cutting. Paper next to paper stays flat.
- */
-:root {
-  --blend: 144px;
-  --blend-fade: linear-gradient(
-    to bottom,
-    var(--night) 0%,
-    color-mix(in oklab, var(--night) 90%, var(--paper)) 14%,
-    color-mix(in oklab, var(--night) 68%, var(--paper)) 34%,
-    color-mix(in oklab, var(--night) 40%, var(--paper)) 56%,
-    color-mix(in oklab, var(--night) 16%, var(--paper)) 78%,
-    var(--paper) 100%
-  );
-}
-
-.surface-paper {
-  position: relative;
-}
-
-/* Keep text clear of the blend: paper sections get room for it top and bottom */
-.surface-paper.section {
-  padding-block: calc(var(--blend) + var(--s-8));
-}
-
-.surface-paper:not(.surface-paper + .surface-paper)::before,
-.surface-paper:not(:has(+ .surface-paper))::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: var(--blend);
-  background: var(--blend-fade);
-  pointer-events: none;
-}
-
-.surface-paper:not(.surface-paper + .surface-paper)::before {
-  top: 0;
-}
-
-.surface-paper:not(:has(+ .surface-paper))::after {
-  bottom: 0;
-  transform: scaleY(-1);
-}
-
-@media (max-width: 1024px) {
-  :root {
-    --blend: 96px;
-  }
 }
 
 /* ── RESET ── */
@@ -732,4 +665,10 @@ html[data-intro="pending"] body {
     right: 16px;
     bottom: calc(16px + 56px + 12px);
   }
+}
+
+/* Full-screen mobile menu open: floating buttons step aside */
+html[data-menu="open"] .back-to-top,
+html[data-menu="open"] [data-floating] {
+  visibility: hidden;
 }

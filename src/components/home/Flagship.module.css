@@ -1,19 +1,16 @@
+/* A slightly raised band, so the services block reads as its own section without a light/dark jump */
+.flagship {
+  background: var(--night-2);
+  --panel: #151127;
+  --line: #2a2542;
+  border-block: 1px solid var(--line-dark);
+}
+
 .grid {
   display: grid;
   grid-template-columns: 5fr 7fr;
   gap: var(--s-16);
   align-items: start;
-}
-
-.flag {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  color: var(--accent);
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  padding: 4px 12px;
-  margin-bottom: var(--s-6);
 }
 
 .sub {
@@ -90,7 +87,7 @@
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--slate);
+  color: var(--muted);
 }
 
 .diagram {
@@ -101,7 +98,7 @@
 
 .wire {
   fill: none;
-  stroke: var(--indigo);
+  stroke: var(--violet);
   stroke-width: 1.5;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -109,18 +106,18 @@
 }
 
 .box {
-  fill: var(--paper);
-  stroke: var(--line-light);
+  fill: var(--night);
+  stroke: var(--line);
 }
 
 .label {
   font-family: var(--font-mono);
   font-size: 13px;
-  fill: var(--slate);
+  fill: var(--muted);
 }
 
 .engine {
-  fill: var(--ink);
+  fill: var(--lift);
   transform-box: fill-box;
   transform-origin: center;
   animation: engine 4s var(--ease-out) infinite;
@@ -134,7 +131,7 @@
 }
 
 .engine + .engineText + .label {
-  fill: #a19eb8;
+  fill: #ddd6ff;
 }
 
 .packet {

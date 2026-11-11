@@ -5,7 +5,8 @@
   overflow: hidden;
 }
 
-.top {
+/* ".footer ." so the global .container padding (0 24px) can't wipe the vertical spacing */
+.footer .top {
   display: grid;
   grid-template-columns: 2fr repeat(4, 1fr);
   gap: var(--s-12);
@@ -68,63 +69,68 @@
   color: var(--fg);
 }
 
-.bottom {
+.textButton {
+  align-self: flex-start;
+  padding: 0;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--fg);
+  text-align: left;
+  cursor: pointer;
+}
+
+.footer .bottom {
   display: flex;
   justify-content: space-between;
-  gap: var(--s-4);
+  align-items: center;
+  gap: var(--s-2) var(--s-6);
   flex-wrap: wrap;
   padding-top: var(--s-6);
   padding-bottom: var(--s-6);
-  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
+  line-height: 1.4;
   color: var(--muted);
 }
 
-/* Giant outline wordmark; letters rise 40px with a 40ms stagger as the footer enters */
+/* The divider spans the content width, not the padded box */
+.footer .bottom::before {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 0;
+  height: 1px;
+  background: var(--line);
+}
+
+.bottom {
+  position: relative;
+}
+
+/* Giant outline wordmark, shown whole at the very bottom of every page */
 .giant {
-  padding: var(--s-6) 24px 0;
-  margin-bottom: -1.2vw;
   display: flex;
   justify-content: center;
-}
-
-.giant :global(.line) {
-  width: 100%;
-  max-width: 1400px;
-}
-
-.giant :global(.line) > span {
-  transform: none !important;
+  padding: var(--s-4) 24px calc(var(--s-8) + env(safe-area-inset-bottom));
 }
 
 .giantSvg {
+  display: block;
   width: 100%;
+  max-width: 1400px;
   height: auto;
   fill: none;
   stroke: #3b3558;
   stroke-width: 1.2;
-  overflow: visible !important;
 }
 
 .giantSvg path {
   vector-effect: non-scaling-stroke;
-  transition: transform var(--dur-4) var(--ease-out);
 }
-
-:global(.js) .giant:not([data-in]) .giantSvg path {
-  transform: translateY(40px);
-}
-
-.giantSvg path:nth-child(2) { transition-delay: 40ms; }
-.giantSvg path:nth-child(3) { transition-delay: 80ms; }
-.giantSvg path:nth-child(4) { transition-delay: 120ms; }
-.giantSvg path:nth-child(5) { transition-delay: 160ms; }
-.giantSvg path:nth-child(6) { transition-delay: 200ms; }
-.giantSvg path:nth-child(7) { transition-delay: 240ms; }
-.giantSvg path:nth-child(8) { transition-delay: 280ms; }
 
 @media (max-width: 960px) {
-  .top {
+  .footer .top {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -139,6 +145,16 @@
   }
 
   .giant {
-    padding: var(--s-6) 16px 0;
+    padding: var(--s-2) 16px calc(var(--s-6) + env(safe-area-inset-bottom));
+  }
+
+  .footer .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer .bottom::before {
+    left: 16px;
+    right: 16px;
   }
 }

@@ -11,7 +11,6 @@ import styles from "./Flagship.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FLAGSHIP = "Workflow automation";
 const STEPS = ["Describe the task.", "Get a plan and a price.", "We build it and hand it over."];
 
 const INPUTS = ["Forms & email", "Spreadsheets", "Chats"];
@@ -49,7 +48,7 @@ const PLAN = [
   "1  Read last week's rows from the sales sheet",
   "2  Total them per store",
   "3  Email each manager their summary, Monday 09:00",
-  "→  Plan and price confirmed on a free call",
+  "→  Runs every Monday. Nobody has to remember.",
 ];
 
 /** Types an example request, then a short plan. Clearly labelled as an example. */
@@ -103,7 +102,12 @@ function Console() {
   );
 }
 
-export default function Flagship() {
+/**
+ * Home: the services teaser (three steps + link to /services).
+ * Services page (`onServicesPage`): just the worked example, because that page
+ * already has the full four-step "How it works" and is the link target.
+ */
+export default function Flagship({ onServicesPage = false }: { onServicesPage?: boolean }) {
   const diagram = useRef<SVGSVGElement>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const inView = useInView(wrap, 0.2);
@@ -165,23 +169,27 @@ export default function Flagship() {
   }, [inView, tall]);
 
   return (
-    <section className={`surface-paper section ${styles.flagship}`} id="services">
+    <section className={`surface-night section ${styles.flagship}`} id="services">
       <div className={`container ${styles.grid}`}>
         <div className={styles.copy}>
-          <p className={styles.flag}>Flagship: {FLAGSHIP}</p>
-          <h2 className={styles.h2}>Need something automated?</h2>
-          <p className={styles.sub}>Tell us the task. The first call is free and ends with a clear plan and a price.</p>
-          <ol className={styles.steps}>
-            {STEPS.map((s, i) => (
-              <li key={s} className={i <= step ? styles.lit : undefined}>
-                <span className="mono">{String(i + 1).padStart(2, "0")}</span>
-                {s}
-              </li>
-            ))}
-          </ol>
-          <Link href="/services" className={styles.more}>
-            All services <ArrowRight size={16} />
-          </Link>
+          <p className="eyebrow">{onServicesPage ? "Example · workflow automation" : "Services · workflow automation"}</p>
+          <h2 className={styles.h2}>Repetitive work, handled.</h2>
+          <p className={styles.sub}>We connect the tools you already use, so weekly chores run on their own.</p>
+          {!onServicesPage && (
+            <>
+              <ol className={styles.steps}>
+                {STEPS.map((s, i) => (
+                  <li key={s} className={i <= step ? styles.lit : undefined}>
+                    <span className="mono">{String(i + 1).padStart(2, "0")}</span>
+                    {s}
+                  </li>
+                ))}
+              </ol>
+              <Link href="/services" className={styles.more}>
+                All services <ArrowRight size={16} />
+              </Link>
+            </>
+          )}
         </div>
 
         <div ref={wrap} className={styles.side}>

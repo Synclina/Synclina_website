@@ -7,7 +7,6 @@ import { ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SynclinaMark from "@/components/brand/SynclinaMark";
-import Clock from "@/components/ui/Clock";
 import { formatUpdateDate, latestUpdates, productBySlug } from "@/lib/constants";
 import { onIntroDone, prefersReducedMotion } from "@/lib/scroll";
 import styles from "./Hero.module.css";
@@ -77,7 +76,7 @@ export default function Hero() {
               See what we&apos;re building <ArrowRight size={16} />
             </Link>
             <Link href="/contact?topic=service" className="btn btn-ghost">
-              Book a free scoping call
+              Book a free call
             </Link>
           </div>
         </div>
@@ -97,7 +96,6 @@ export default function Hero() {
             Latest update: {productBySlug(latest.product)?.title} · {formatUpdateDate(latest.date)}
           </Link>
         )}
-        <Clock className={styles.clock} />
       </div>
     </section>
   );

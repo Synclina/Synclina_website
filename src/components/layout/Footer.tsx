@@ -2,6 +2,7 @@ import Link from "next/link";
 import SynclinaMark from "@/components/brand/SynclinaMark";
 import SynclinaWordmark from "@/components/brand/SynclinaWordmark";
 import Clock from "@/components/ui/Clock";
+import { CookieSettingsButton } from "@/components/ui/CookieConsent";
 import { PRODUCTS, SITE } from "@/lib/constants";
 import styles from "./Footer.module.css";
 
@@ -64,6 +65,7 @@ export default function Footer() {
               {l.label}
             </Link>
           ))}
+          <CookieSettingsButton className={`link-draw ${styles.textButton}`} />
         </nav>
 
         <nav className={styles.col} aria-label="Social">
@@ -83,12 +85,8 @@ export default function Footer() {
         </span>
       </div>
 
-      <div className={`lines ${styles.giant}`} aria-hidden="true">
-        <span className="line">
-          <span>
-            <SynclinaWordmark height={200} className={styles.giantSvg} letterAttr="data-letter" />
-          </span>
-        </span>
+      <div className={styles.giant} aria-hidden="true">
+        <SynclinaWordmark height={200} className={styles.giantSvg} letterAttr="data-letter" />
       </div>
     </footer>
   );

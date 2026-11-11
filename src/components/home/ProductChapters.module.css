@@ -1,5 +1,5 @@
 .section {
-  padding-top: calc(var(--blend) + var(--s-8));
+  padding-top: var(--s-24);
 }
 
 .head {
@@ -16,23 +16,180 @@
 
 .chapters {
   position: relative;
-  display: grid;
-  gap: var(--s-16);
-  padding-bottom: var(--s-32);
 }
 
-/* Stacked (phones, reduced motion): each chapter is a full-width card */
+.pin {
+  padding-bottom: var(--s-24);
+}
+
+/* Phones (and reduced motion): a swipeable row of cards that snaps one at a time */
+.slider {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  /* bleed to the screen edges so the next card peeks in */
+  margin: 0 -24px;
+  padding: 4px 24px 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 24px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+
+/* Phones use 16px page gutters (see .container in globals), and each card is kept
+   short enough to fit on screen whole, so its timer bar is visible while you read */
+@media (max-width: 640px) {
+  .slider {
+    margin: 0 -16px;
+    padding: 4px 16px 8px;
+    scroll-padding: 0 16px;
+  }
+
+  .item {
+    gap: var(--s-4);
+    padding: var(--s-5, 20px) var(--s-5, 20px) var(--s-6);
+  }
+
+  .item .title {
+    margin-top: var(--s-2);
+    font-size: 2.25rem;
+  }
+
+  .item .tagline {
+    margin-top: var(--s-2);
+    font-size: 1.125rem;
+  }
+
+  .item .does {
+    margin-top: var(--s-2);
+    font-size: 0.9375rem;
+  }
+
+  .item .meter {
+    margin-top: var(--s-4);
+  }
+
+  .item .more {
+    margin-top: var(--s-4);
+  }
+
+  .item .visual {
+    min-height: 0;
+    height: 250px;
+  }
+}
+
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
 .item {
-  display: grid;
+  flex: 0 0 min(86%, 560px);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
   gap: var(--s-6);
+  padding: var(--s-6);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--panel);
+  transform: scale(0.96);
+  opacity: 0.7;
+  transition: transform var(--dur-3) var(--ease-out), opacity var(--dur-3) var(--ease-out);
+}
+
+.item.on {
+  transform: none;
+  opacity: 1;
+}
+
+.text {
+  flex: 1;
 }
 
 .visual {
-  border-radius: var(--r-lg);
-  border: 1px solid var(--line-dark);
-  background: var(--night-2);
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--night);
   overflow: hidden;
-  min-height: 380px;
+  min-height: 260px;
+}
+
+/* Timer along the bottom edge of each card: fills while that product is showing */
+.timer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.timer b {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+.timing b {
+  animation: fill linear forwards;
+}
+
+@keyframes fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Position dots: the current one stretches into a pill */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: var(--s-4);
+}
+
+.dot {
+  width: 32px;
+  height: 32px; /* comfortable tap target around a small dot */
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.dot i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line);
+  transition: width var(--dur-2) var(--ease-out), background-color var(--dur-2) var(--ease-out);
+}
+
+.current i {
+  width: 22px;
+  background: var(--orchid);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    transform: none;
+    transition: none;
+  }
+
+  .timing b {
+    animation: none;
+    transform: scaleX(1);
+  }
 }
 
 .stagePanel,
@@ -129,10 +286,11 @@
 /* Pinned chapters (desktop, motion OK): one stage, chapters swap in place */
 @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
   .section {
-    padding-bottom: var(--blend);
+    padding-bottom: var(--s-16);
   }
 
   .pin {
+    padding-bottom: 0;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -146,11 +304,33 @@
     margin-top: calc(var(--nav-h) / 2);
   }
 
+  .chapters {
+    display: grid;
+  }
+
+  .slider {
+    display: contents;
+  }
+
+  .dots,
+  .timer {
+    display: none;
+  }
+
   .item {
     grid-area: 1 / 1 / 2 / -1;
+    display: grid;
     grid-template-columns: subgrid;
     align-items: center;
     gap: 0 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    overflow: visible;
+    transform: none;
+    opacity: 1;
+    transition: none;
   }
 
   .text {

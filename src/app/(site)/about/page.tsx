@@ -17,7 +17,7 @@ export default function AboutPage() {
         label="About Synclina"
         title="Ideas, built to stay"
         accent="in sync."
-        lead="A human-first AI studio from Hyderabad, turning everyday problems into intelligent products and helping businesses automate the rest."
+        lead="A human-first AI studio turning everyday problems into intelligent products and helping businesses automate the rest."
       />
       <AboutContent />
       <ClosingCTA title="Bring us the next idea." sub="Try our products early, or tell us what to build next." label="Get in touch" href="/contact" />

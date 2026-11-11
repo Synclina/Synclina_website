@@ -65,7 +65,7 @@ export default function AboutContent() {
                 products beyond the screen.
               </p>
               <p data-reveal data-reveal-delay="0.2">
-                <strong>Multiple ideas, one philosophy. Just getting started, with a lot more to come.</strong>
+                <strong>Just getting started, with a lot more to come.</strong>
               </p>
             </div>
           </div>
