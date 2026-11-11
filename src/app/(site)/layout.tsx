@@ -6,6 +6,7 @@ import Intro from "@/components/intro/Intro";
 import MotionLayer from "@/components/motion/MotionLayer";
 import BackToTop from "@/components/ui/BackToTop";
 import AgentWidget from "@/components/ai/AgentWidget";
+import CookieConsent from "@/components/ui/CookieConsent";
 import { FOUNDER, SITE } from "@/lib/constants";
 import "../globals.css";
 
@@ -109,6 +110,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <MotionLayer />
         <BackToTop />
         <AgentWidget />
+        <CookieConsent />
         <Intro />
       </body>
     </html>
