@@ -69,7 +69,7 @@ export const PRODUCTS: Product[] = [
     domain: "Mobility · Everyday driving",
     tagline: "Your vehicle, finally understood.",
     summary:
-      "DrivSync is the app for everyday drivers and riders. It keeps fuel, mileage, expenses, service, paperwork and rides in one place, with safety tools and an AI Copilot.",
+      "DrivSync is the app for everyday drivers and riders. It keeps fuel, mileage, expenses, service, paperwork and rides in one place, with safety tools and an AI Assistant.",
     problem: "Most people have no clear picture of what their vehicle really costs them, or help when something goes wrong on the road.",
     approach: "Turn everyday driving data into simple insights and timely nudges — with safety features that are never behind a paywall.",
     highlights: [

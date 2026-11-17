@@ -24,7 +24,7 @@ const GRAPHICS: Record<string, (p: { active: boolean }) => React.ReactNode> = {
 
 /** One concrete sentence per product: what it does, not how it feels. */
 const DOES: Record<string, string> = {
-  drivsync: "Fuel, expenses, service, paperwork, rides and safety tools for drivers and riders, with an AI Copilot.",
+  drivsync: "Fuel, expenses, service, paperwork, rides and safety tools for drivers and riders, with an AI Assistant.",
   "creator-growth": "Automation and insights for creators and small businesses.",
   travel: "Plan trips together and split expenses.",
 };

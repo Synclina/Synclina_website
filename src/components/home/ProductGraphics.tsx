@@ -27,7 +27,7 @@ export function DrivSyncDevice({ active = false }: { active?: boolean }) {
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
       role="img"
-      aria-label="DrivSync app, example screen: weekly fuel efficiency, a fuel gauge, spending bars and the AI Copilot"
+      aria-label="DrivSync app, example screen: weekly fuel efficiency, a fuel gauge, spending bars and the AI Assistant"
     >
       <div className={styles.rig} aria-hidden="true">
         <div className={`${styles.layer} ${styles.phone}`}>
@@ -58,7 +58,7 @@ export function DrivSyncDevice({ active = false }: { active?: boolean }) {
         </div>
 
         <div className={`${styles.layer} ${styles.copilot}`}>
-          <span className={styles.cardLabel}>AI Copilot</span>
+          <span className={styles.cardLabel}>AI Assistant</span>
           <p>&ldquo;What did fuel cost me this month?&rdquo;</p>
         </div>
       </div>
